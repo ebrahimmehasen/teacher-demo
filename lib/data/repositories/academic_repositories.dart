@@ -37,8 +37,18 @@ abstract interface class AttendanceRepository {
     String? studentId,
     String? groupId,
   });
+  Future<List<Attendance>> query(
+    String tenantId, {
+    DateTime? from,
+    DateTime? to,
+    String? studentId,
+    String? groupId,
+  });
   Future<Attendance> add(Attendance attendance);
   Future<void> update(Attendance attendance);
+
+  /// Inserts new records and replaces existing ones (matched by id).
+  Future<void> upsertAll(List<Attendance> records);
   Future<void> delete(String tenantId, String id);
 }
 
@@ -51,6 +61,7 @@ abstract interface class AssessmentRepository {
   });
   Future<Assessment> addAssessment(Assessment assessment);
   Future<void> upsertResult(AssessmentResult result);
+  Future<void> upsertResults(List<AssessmentResult> results);
 }
 
 abstract interface class LessonRepository {
