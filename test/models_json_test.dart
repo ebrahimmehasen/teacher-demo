@@ -9,8 +9,11 @@ import 'package:teacher_demo/data/models/models.dart';
 Map<String, dynamic> _wire(Map<String, dynamic> json) =>
     jsonDecode(jsonEncode(json)) as Map<String, dynamic>;
 
-void _roundTrip<T>(List<T> rows, Map<String, dynamic> Function(T) toJson,
-    T Function(Map<String, dynamic>) fromJson) {
+void _roundTrip<T>(
+  List<T> rows,
+  Map<String, dynamic> Function(T) toJson,
+  T Function(Map<String, dynamic>) fromJson,
+) {
   expect(rows, isNotEmpty, reason: '$T has no seed rows');
   for (final row in rows) {
     final copy = fromJson(_wire(toJson(row)));
