@@ -26,6 +26,7 @@ abstract interface class EnrollmentRepository {
   Future<List<Enrollment>> getForStudent(String studentId);
   Future<Enrollment> add(Enrollment enrollment);
   Future<void> update(Enrollment enrollment);
+  Future<void> updateAll(List<Enrollment> enrollments);
 }
 
 abstract interface class AttendanceRepository {
