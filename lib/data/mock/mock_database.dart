@@ -54,6 +54,18 @@ class MockTable<T> {
     _changes.add(null);
   }
 
+  void upsertAll(Iterable<T> rows) {
+    for (final row in rows) {
+      final index = _rows.indexWhere((r) => _idOf(r) == _idOf(row));
+      if (index < 0) {
+        _rows.add(row);
+      } else {
+        _rows[index] = row;
+      }
+    }
+    _changes.add(null);
+  }
+
   void updateWhere(bool Function(T row) test, T Function(T row) update) {
     for (var i = 0; i < _rows.length; i++) {
       if (test(_rows[i])) _rows[i] = update(_rows[i]);
