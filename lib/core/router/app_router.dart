@@ -8,6 +8,10 @@ import '../../features/parent/parent_shell.dart';
 import '../../features/platform_admin/admin_shell.dart';
 import '../../features/shared/coming_soon_page.dart';
 import '../../features/student/student_shell.dart';
+import '../../features/teacher/dashboard/dashboard_page.dart';
+import '../../features/teacher/schedule/schedule_page.dart';
+import '../../features/teacher/settings/settings_page.dart';
+import '../../features/teacher/students/students_page.dart';
 import '../../features/teacher/teacher_shell.dart';
 import '../../services/session_service.dart';
 import 'role_destinations.dart';
@@ -30,16 +34,26 @@ final routerProvider = Provider<GoRouter>((ref) {
     ),
     routes: [
       GoRoute(path: loginPath, builder: (_, _) => const LoginPage()),
-      _roleShell(RoleDestinations.teacher,
-          (location, child) => TeacherShell(location: location, child: child)),
-      _roleShell(RoleDestinations.assistant,
-          (location, child) => AssistantShell(location: location, child: child)),
-      _roleShell(RoleDestinations.student,
-          (location, child) => StudentShell(location: location, child: child)),
-      _roleShell(RoleDestinations.parent,
-          (location, child) => ParentShell(location: location, child: child)),
-      _roleShell(RoleDestinations.platformAdmin,
-          (location, child) => AdminShell(location: location, child: child)),
+      _roleShell(
+        RoleDestinations.teacher,
+        (location, child) => TeacherShell(location: location, child: child),
+      ),
+      _roleShell(
+        RoleDestinations.assistant,
+        (location, child) => AssistantShell(location: location, child: child),
+      ),
+      _roleShell(
+        RoleDestinations.student,
+        (location, child) => StudentShell(location: location, child: child),
+      ),
+      _roleShell(
+        RoleDestinations.parent,
+        (location, child) => ParentShell(location: location, child: child),
+      ),
+      _roleShell(
+        RoleDestinations.platformAdmin,
+        (location, child) => AdminShell(location: location, child: child),
+      ),
     ],
   );
 
@@ -50,13 +64,22 @@ final routerProvider = Provider<GoRouter>((ref) {
   return router;
 });
 
+/// Built screens by path; every other destination shows [ComingSoonPage].
+final Map<String, Widget Function()> _pages = {
+  '/teacher/dashboard': () => const DashboardPage(),
+  '/teacher/schedule': () => const SchedulePage(),
+  '/teacher/students': () => const StudentsPage(),
+  '/teacher/settings': () => const SettingsPage(),
+};
+
 ShellRoute _roleShell(List<RoleDestination> destinations, _ShellBuilder shell) => ShellRoute(
-      builder: (context, state, child) => shell(state.uri.path, child),
-      routes: [
-        for (final d in destinations)
-          GoRoute(
-            path: d.path,
-            pageBuilder: (_, _) => NoTransitionPage(child: ComingSoonPage(destination: d)),
-          ),
-      ],
-    );
+  builder: (context, state, child) => shell(state.uri.path, child),
+  routes: [
+    for (final d in destinations)
+      GoRoute(
+        path: d.path,
+        pageBuilder: (_, _) =>
+            NoTransitionPage(child: _pages[d.path]?.call() ?? ComingSoonPage(destination: d)),
+      ),
+  ],
+);
