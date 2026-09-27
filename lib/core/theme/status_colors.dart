@@ -42,14 +42,13 @@ class StatusColors extends ThemeExtension<StatusColors> {
     Color? info,
     Color? danger,
     Color? neutral,
-  }) =>
-      StatusColors(
-        success: success ?? this.success,
-        warning: warning ?? this.warning,
-        info: info ?? this.info,
-        danger: danger ?? this.danger,
-        neutral: neutral ?? this.neutral,
-      );
+  }) => StatusColors(
+    success: success ?? this.success,
+    warning: warning ?? this.warning,
+    info: info ?? this.info,
+    danger: danger ?? this.danger,
+    neutral: neutral ?? this.neutral,
+  );
 
   @override
   StatusColors lerp(StatusColors? other, double t) {
