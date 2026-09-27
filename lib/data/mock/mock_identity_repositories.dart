@@ -58,9 +58,8 @@ class MockTenantRepository implements TenantRepository {
   Stream<List<Tenant>> watchAll() => _db.tenants.watch((_) => true);
 
   @override
-  Stream<Tenant?> watchById(String id) => _db.tenants
-      .watch((t) => t.id == id)
-      .map((rows) => rows.isEmpty ? null : rows.first);
+  Stream<Tenant?> watchById(String id) =>
+      _db.tenants.watch((t) => t.id == id).map((rows) => rows.isEmpty ? null : rows.first);
 
   @override
   Future<Tenant?> getById(String id) async {
