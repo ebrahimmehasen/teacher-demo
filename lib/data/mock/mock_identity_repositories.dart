@@ -171,6 +171,12 @@ class MockStudentRepository implements StudentRepository {
   }
 
   @override
+  Future<List<ParentLink>> getLinksForStudents(Set<String> studentUserIds) async {
+    await _db.delay();
+    return _db.parentLinks.where((l) => studentUserIds.contains(l.studentUserId));
+  }
+
+  @override
   Future<void> linkParent(ParentLink link) async {
     await _db.delay();
     _db.parentLinks.upsert(link);
