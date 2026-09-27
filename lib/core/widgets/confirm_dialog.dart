@@ -15,10 +15,7 @@ Future<bool> showConfirmDialog(
       title: Text(title),
       content: Text(message),
       actions: [
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(false),
-          child: const Text('إلغاء'),
-        ),
+        TextButton(onPressed: () => Navigator.of(context).pop(false), child: const Text('إلغاء')),
         FilledButton(
           style: destructive
               ? FilledButton.styleFrom(
