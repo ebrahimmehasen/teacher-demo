@@ -28,10 +28,10 @@ class Session {
   UserRole get role => user.role;
 
   Session copyWith({String? tenantId, String? activeStudentId}) => Session(
-        user: user,
-        tenantId: tenantId ?? this.tenantId,
-        activeStudentId: activeStudentId ?? this.activeStudentId,
-      );
+    user: user,
+    tenantId: tenantId ?? this.tenantId,
+    activeStudentId: activeStudentId ?? this.activeStudentId,
+  );
 }
 
 class SessionController extends Notifier<Session?> {
