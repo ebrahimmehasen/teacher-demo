@@ -92,13 +92,16 @@ class MockTable<T> {
 /// The single in-memory store shared by all roles during a session.
 class MockDatabase {
   MockDatabase(SeedData seed, {Duration Function()? latency})
-      : latency = latency ?? _randomLatency {
+    : latency = latency ?? _randomLatency {
     tenants = MockTable((r) => r.id, this.latency, seed.tenants);
     users = MockTable((r) => r.id, this.latency, seed.users);
     staff = MockTable((r) => r.id, this.latency, seed.staff);
     studentProfiles = MockTable((r) => r.userId, this.latency, seed.studentProfiles);
     parentLinks = MockTable(
-        (r) => '${r.parentUserId}|${r.studentUserId}', this.latency, seed.parentLinks);
+      (r) => '${r.parentUserId}|${r.studentUserId}',
+      this.latency,
+      seed.parentLinks,
+    );
     grades = MockTable((r) => r.id, this.latency, seed.grades);
     groups = MockTable((r) => r.id, this.latency, seed.groups);
     periods = MockTable((r) => r.tenantId, this.latency, seed.periods);
@@ -118,8 +121,7 @@ class MockDatabase {
   }
 
   static final _latencyRandom = Random();
-  static Duration _randomLatency() =>
-      Duration(milliseconds: 300 + _latencyRandom.nextInt(301));
+  static Duration _randomLatency() => Duration(milliseconds: 300 + _latencyRandom.nextInt(301));
 
   final Duration Function() latency;
 
