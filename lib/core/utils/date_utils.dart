@@ -1,5 +1,7 @@
 import 'package:intl/intl.dart';
 
+import '../../data/models/clock_time.dart';
+
 abstract final class AppDates {
   /// Display order of the Egyptian week (Saturday first), as [DateTime.weekday] values.
   static const weekOrder = [
@@ -52,6 +54,12 @@ abstract final class AppDates {
     final minute = d.minute.toString().padLeft(2, '0');
     return '$hour12:$minute ${d.hour < 12 ? 'ص' : 'م'}';
   }
+
+  /// e.g. ClockTime(17, 0) ⇒ "5:00 م".
+  static String clock(ClockTime t) => time(DateTime(2000, 1, 1, t.hour, t.minute));
+
+  /// e.g. "27/9".
+  static String dayShort(DateTime d) => '${d.day}/${d.month}';
 
   static String westernDigits(String input) {
     const eastern = '٠١٢٣٤٥٦٧٨٩';
