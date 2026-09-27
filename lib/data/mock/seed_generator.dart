@@ -2,14 +2,13 @@ import 'dart:math';
 
 import '../../core/constants/demo_accounts.dart';
 import '../../core/utils/date_utils.dart';
+import '../../services/pricing_service.dart';
 import '../models/models.dart';
 import 'seed_data.dart';
 
 /// Builds the deterministic demo dataset. Same [now] ⇒ identical output.
 class SeedGenerator {
-  SeedGenerator({DateTime? now})
-      : now = now ?? DateTime.now(),
-        _r = Random(42);
+  SeedGenerator({DateTime? now}) : now = now ?? DateTime.now(), _r = Random(42);
 
   final DateTime now;
   final Random _r;
@@ -31,28 +30,94 @@ class SeedGenerator {
   static const _sessionMinutes = 90;
 
   static const _maleNames = [
-    'محمد', 'أحمد', 'محمود', 'مصطفى', 'عمر', 'يوسف', 'علي', 'حسن', 'خالد', 'إبراهيم',
-    'كريم', 'عبدالرحمن', 'زياد', 'مازن', 'آدم', 'سيف', 'ياسين', 'مروان', 'أنس', 'حمزة',
+    'محمد',
+    'أحمد',
+    'محمود',
+    'مصطفى',
+    'عمر',
+    'يوسف',
+    'علي',
+    'حسن',
+    'خالد',
+    'إبراهيم',
+    'كريم',
+    'عبدالرحمن',
+    'زياد',
+    'مازن',
+    'آدم',
+    'سيف',
+    'ياسين',
+    'مروان',
+    'أنس',
+    'حمزة',
   ];
   static const _femaleNames = [
-    'مريم', 'سارة', 'نور', 'فاطمة', 'آية', 'ملك', 'جنى', 'حبيبة', 'رنا', 'سلمى',
-    'ندى', 'هنا', 'ياسمين', 'دينا', 'روان', 'لجين', 'شهد', 'منة', 'رحمة', 'بسمة',
+    'مريم',
+    'سارة',
+    'نور',
+    'فاطمة',
+    'آية',
+    'ملك',
+    'جنى',
+    'حبيبة',
+    'رنا',
+    'سلمى',
+    'ندى',
+    'هنا',
+    'ياسمين',
+    'دينا',
+    'روان',
+    'لجين',
+    'شهد',
+    'منة',
+    'رحمة',
+    'بسمة',
   ];
   static const _fatherNames = [
-    'سامح', 'طارق', 'أشرف', 'هشام', 'وائل', 'عادل', 'ممدوح', 'شريف', 'حسام', 'ماجد',
-    'عصام', 'جمال', 'رامي', 'تامر', 'أيمن', 'ياسر', 'نبيل', 'عماد', 'سمير', 'فتحي',
+    'سامح',
+    'طارق',
+    'أشرف',
+    'هشام',
+    'وائل',
+    'عادل',
+    'ممدوح',
+    'شريف',
+    'حسام',
+    'ماجد',
+    'عصام',
+    'جمال',
+    'رامي',
+    'تامر',
+    'أيمن',
+    'ياسر',
+    'نبيل',
+    'عماد',
+    'سمير',
+    'فتحي',
   ];
   static const _familyNames = [
-    'عبدالله', 'السيد', 'حسين', 'إبراهيم', 'مصطفى', 'عبدالعزيز', 'الشافعي', 'منصور',
-    'النجار', 'فهمي', 'رشدي', 'سليمان', 'البنا', 'زكي', 'عثمان', 'الجمال', 'حجازي',
-    'شاكر', 'بدوي', 'رضوان',
+    'عبدالله',
+    'السيد',
+    'حسين',
+    'إبراهيم',
+    'مصطفى',
+    'عبدالعزيز',
+    'الشافعي',
+    'منصور',
+    'النجار',
+    'فهمي',
+    'رشدي',
+    'سليمان',
+    'البنا',
+    'زكي',
+    'عثمان',
+    'الجمال',
+    'حجازي',
+    'شاكر',
+    'بدوي',
+    'رضوان',
   ];
-  static const _excuses = [
-    'ظروف مرضية',
-    'مناسبة عائلية',
-    'امتحان في المدرسة',
-    'سفر مع الأسرة',
-  ];
+  static const _excuses = ['ظروف مرضية', 'مناسبة عائلية', 'امتحان في المدرسة', 'سفر مع الأسرة'];
 
   // Collections filled by generate().
   final _tenants = <Tenant>[];
@@ -179,13 +244,15 @@ class SeedGenerator {
     for (var i = 0; i < parentCount; i++) {
       fatherOf[i] = _pick(_fatherNames);
       familyOf[i] = _pick(_familyNames);
-      _users.add(User(
-        id: parentUserId(i),
-        name: '${fatherOf[i]} ${familyOf[i]}',
-        phone: _phone('015', i),
-        password: DemoAccounts.password,
-        role: UserRole.parent,
-      ));
+      _users.add(
+        User(
+          id: parentUserId(i),
+          name: '${fatherOf[i]} ${familyOf[i]}',
+          phone: _phone('015', i),
+          password: DemoAccounts.password,
+          role: UserRole.parent,
+        ),
+      );
     }
 
     const totalStudents = mainStudentCount + _secondTenantExtraStudents;
@@ -194,18 +261,19 @@ class SeedGenerator {
       final father = parentIndex != null ? fatherOf[parentIndex]! : _pick(_fatherNames);
       final family = parentIndex != null ? familyOf[parentIndex]! : _pick(_familyNames);
       final first = i.isEven ? _pick(_maleNames) : _pick(_femaleNames);
-      _users.add(User(
-        id: studentUserId(i),
-        name: '$first $father $family',
-        phone: _phone('012', i),
-        password: DemoAccounts.password,
-        role: UserRole.student,
-      ));
+      _users.add(
+        User(
+          id: studentUserId(i),
+          name: '$first $father $family',
+          phone: _phone('012', i),
+          password: DemoAccounts.password,
+          role: UserRole.student,
+        ),
+      );
       if (parentIndex != null) {
-        _links.add(ParentLink(
-          parentUserId: parentUserId(parentIndex),
-          studentUserId: studentUserId(i),
-        ));
+        _links.add(
+          ParentLink(parentUserId: parentUserId(parentIndex), studentUserId: studentUserId(i)),
+        );
       }
     }
   }
@@ -214,26 +282,28 @@ class SeedGenerator {
   // Tenants, grades, groups, enrollments
 
   void _createMainTenant() {
-    _tenants.add(const Tenant(
-      id: mainTenantId,
-      ownerUserId: teacherUserId,
-      teacherName: 'أ. أحمد سامي',
-      subject: 'فيزياء',
-      phone: DemoAccounts.teacherPhone,
-      subscriptionPlan: SubscriptionPlan.pro,
-      subscriptionStatus: SubscriptionStatus.active,
-      settings: TenantSettings(
-        acceptedPaymentMethods: {
-          PaymentMethod.cash,
-          PaymentMethod.vodafoneCash,
-          PaymentMethod.instaPay,
-        },
-        walletNumbers: {
-          PaymentMethod.vodafoneCash: '01012345678',
-          PaymentMethod.instaPay: 'ahmed.samy@instapay',
-        },
+    _tenants.add(
+      const Tenant(
+        id: mainTenantId,
+        ownerUserId: teacherUserId,
+        teacherName: 'أ. أحمد سامي',
+        subject: 'فيزياء',
+        phone: DemoAccounts.teacherPhone,
+        subscriptionPlan: SubscriptionPlan.pro,
+        subscriptionStatus: SubscriptionStatus.active,
+        settings: TenantSettings(
+          acceptedPaymentMethods: {
+            PaymentMethod.cash,
+            PaymentMethod.vodafoneCash,
+            PaymentMethod.instaPay,
+          },
+          walletNumbers: {
+            PaymentMethod.vodafoneCash: '01012345678',
+            PaymentMethod.instaPay: 'ahmed.samy@instapay',
+          },
+        ),
       ),
-    ));
+    );
     _periods.add(const SchedulePeriods(tenantId: mainTenantId));
     _staff.addAll([
       const StaffMember(
@@ -265,18 +335,34 @@ class SeedGenerator {
       (_group(mainTenantId, 'grp-a-6', g3, 1, [(sat, 4), (tue, 4)]), 9),
       (_group(mainTenantId, 'grp-a-7', g3, 2, [(sun, 5), (wed, 5)]), 8),
       (
-        _group(mainTenantId, 'grp-a-8', g3, 3, [(mon, 5), (thu, 5)],
-            price: 800, capacity: 5, address: 'مدينة نصر – شارع عباس العقاد'),
-        5
+        _group(
+          mainTenantId,
+          'grp-a-8',
+          g3,
+          3,
+          [(mon, 5), (thu, 5)],
+          price: 800,
+          capacity: 5,
+          address: 'مدينة نصر – شارع عباس العقاد',
+        ),
+        5,
       ),
       (_group(mainTenantId, 'grp-a-4', g2, 1, [(sat, 2), (tue, 2)]), 9),
       (_group(mainTenantId, 'grp-a-5', g2, 2, [(sun, 3), (wed, 3)]), 8),
       (_group(mainTenantId, 'grp-a-1', g1, 1, [(sat, 0), (tue, 0)]), 8),
       (_group(mainTenantId, 'grp-a-2', g1, 2, [(sun, 1), (wed, 1)]), 8),
       (
-        _group(mainTenantId, 'grp-a-3', g1, 3, [(mon, 4), (thu, 4)],
-            price: 600, capacity: 6, address: 'المعادي – شارع 9'),
-        5
+        _group(
+          mainTenantId,
+          'grp-a-3',
+          g1,
+          3,
+          [(mon, 4), (thu, 4)],
+          price: 600,
+          capacity: 6,
+          address: 'المعادي – شارع 9',
+        ),
+        5,
       ),
     ];
 
@@ -297,27 +383,32 @@ class SeedGenerator {
   }
 
   void _createSecondTenant() {
-    _tenants.add(const Tenant(
-      id: secondTenantId,
-      ownerUserId: secondTeacherUserId,
-      teacherName: 'أ. منى عادل',
-      subject: 'كيمياء',
-      phone: DemoAccounts.secondTeacherPhone,
-      subscriptionPlan: SubscriptionPlan.basic,
-      subscriptionStatus: SubscriptionStatus.trial,
-      settings: TenantSettings(
-        acceptedPaymentMethods: {PaymentMethod.cash, PaymentMethod.vodafoneCash},
-        walletNumbers: {PaymentMethod.vodafoneCash: '01098765432'},
+    _tenants.add(
+      const Tenant(
+        id: secondTenantId,
+        ownerUserId: secondTeacherUserId,
+        teacherName: 'أ. منى عادل',
+        subject: 'كيمياء',
+        phone: DemoAccounts.secondTeacherPhone,
+        subscriptionPlan: SubscriptionPlan.basic,
+        subscriptionStatus: SubscriptionStatus.trial,
+        settings: TenantSettings(
+          acceptedPaymentMethods: {PaymentMethod.cash, PaymentMethod.vodafoneCash},
+          walletNumbers: {PaymentMethod.vodafoneCash: '01098765432'},
+        ),
       ),
-    ));
+    );
     _periods.add(const SchedulePeriods(tenantId: secondTenantId));
 
     final grade = _grade(secondTenantId, 'g-m-3', 'تالتة ثانوي', 320);
-    final m1 = _group(secondTenantId, 'grp-m-1', grade, 1,
-        [(DateTime.monday, 1), (DateTime.thursday, 1)]);
-    final m2 = _group(secondTenantId, 'grp-m-2', grade, 2,
-        [(DateTime.sunday, 2), (DateTime.wednesday, 2)],
-        capacity: 25);
+    final m1 = _group(secondTenantId, 'grp-m-1', grade, 1, [
+      (DateTime.monday, 1),
+      (DateTime.thursday, 1),
+    ]);
+    final m2 = _group(secondTenantId, 'grp-m-2', grade, 2, [
+      (DateTime.sunday, 2),
+      (DateTime.wednesday, 2),
+    ], capacity: 25);
 
     // The demo student studies chemistry too (drives the teacher switcher).
     _enroll(secondTenantId, 0, m1, grade);
@@ -376,24 +467,25 @@ class SeedGenerator {
   void _enroll(String tenantId, int studentIndex, Group group, Grade grade) {
     final userId = studentUserId(studentIndex);
     if (!_profiles.any((p) => p.userId == userId)) {
-      _profiles.add(StudentProfile(
-        userId: userId,
-        schoolYear: grade.name,
-        parentLinkCode: _linkCode(),
-      ));
+      _profiles.add(
+        StudentProfile(userId: userId, schoolYear: grade.name, parentLinkCode: _linkCode()),
+      );
     }
-    _enrollments.add(Enrollment(
-      id: _id('enr'),
-      tenantId: tenantId,
-      studentId: userId,
-      groupId: group.id,
-      joinedAt: _today.subtract(Duration(days: 90 + _r.nextInt(60))),
-    ));
+    _enrollments.add(
+      Enrollment(
+        id: _id('enr'),
+        tenantId: tenantId,
+        studentId: userId,
+        groupId: group.id,
+        joinedAt: _today.subtract(Duration(days: 190 + _r.nextInt(60))),
+      ),
+    );
   }
 
   void _updateEnrollment(String tenantId, int studentIndex, Enrollment Function(Enrollment) f) {
     final i = _enrollments.indexWhere(
-        (e) => e.tenantId == tenantId && e.studentId == studentUserId(studentIndex));
+      (e) => e.tenantId == tenantId && e.studentId == studentUserId(studentIndex),
+    );
     _enrollments[i] = f(_enrollments[i]);
   }
 
@@ -410,21 +502,26 @@ class SeedGenerator {
       final day = _today.subtract(Duration(days: back));
       for (final group in groups) {
         for (final session in group.sessions.where((s) => s.weekday == day.weekday)) {
-          final enrolled = _enrollments.where((e) =>
-              e.tenantId == tenant.id && e.groupId == group.id && !e.joinedAt.isAfter(day));
+          final enrolled = _enrollments.where(
+            (e) => e.tenantId == tenant.id && e.groupId == group.id && !e.joinedAt.isAfter(day),
+          );
           for (final enrollment in enrolled) {
-            final risk =
-                reliability.putIfAbsent(enrollment.studentId, () => _r.nextDouble() * 0.25);
-            _attendance.add(_attendanceRecord(
-              tenantId: tenant.id,
-              studentId: enrollment.studentId,
-              groupId: group.id,
-              day: day,
-              start: session.startTime,
-              risk: risk,
-              threshold: threshold,
-              recorder: recorder,
-            ));
+            final risk = reliability.putIfAbsent(
+              enrollment.studentId,
+              () => _r.nextDouble() * 0.25,
+            );
+            _attendance.add(
+              _attendanceRecord(
+                tenantId: tenant.id,
+                studentId: enrollment.studentId,
+                groupId: group.id,
+                day: day,
+                start: session.startTime,
+                risk: risk,
+                threshold: threshold,
+                recorder: recorder,
+              ),
+            );
           }
         }
       }
@@ -461,8 +558,7 @@ class SeedGenerator {
       status = AttendanceStatus.absent;
     }
 
-    final attended =
-        status == AttendanceStatus.present || status == AttendanceStatus.late;
+    final attended = status == AttendanceStatus.present || status == AttendanceStatus.late;
     final byQr = attended && _r.nextDouble() < 0.9;
     return Attendance(
       id: _id('att'),
@@ -493,32 +589,38 @@ class SeedGenerator {
         .take(3)
         .map((e) => e.studentId);
     for (final studentId in students) {
-      _attendance.add(Attendance(
-        id: _id('att'),
-        tenantId: mainTenantId,
-        studentId: studentId,
-        groupId: other.id,
-        date: day,
-        status: AttendanceStatus.present,
-        scanTime: session.startTime.onDate(day).add(const Duration(minutes: 3)),
-        method: AttendanceMethod.qr,
-        isMakeup: true,
-        recordedBy: assistantUserId,
-      ));
+      _attendance.add(
+        Attendance(
+          id: _id('att'),
+          tenantId: mainTenantId,
+          studentId: studentId,
+          groupId: other.id,
+          date: day,
+          status: AttendanceStatus.present,
+          scanTime: session.startTime.onDate(day).add(const Duration(minutes: 3)),
+          method: AttendanceMethod.qr,
+          isMakeup: true,
+          recordedBy: assistantUserId,
+        ),
+      );
     }
   }
 
   // ---------------------------------------------------------------------------
-  // Payments: two previous months mostly paid, current month partly paid.
+  // Payments: 6 months; older months almost all paid, current month partly paid.
 
   void _generatePayments(Tenant tenant) {
     final recorder = tenant.id == mainTenantId ? assistantUserId : secondTeacherUserId;
     final demoStudent = studentUserId(0);
 
-    for (var monthOffset = -2; monthOffset <= 0; monthOffset++) {
+    for (var monthOffset = -5; monthOffset <= 0; monthOffset++) {
       final month = AppDates.addMonths(_today, monthOffset);
       final key = AppDates.monthKey(month);
-      final paidShare = switch (monthOffset) { -2 => 0.97, -1 => 0.88, _ => 0.6 };
+      final paidShare = switch (monthOffset) {
+        0 => 0.6,
+        -1 => 0.88,
+        _ => 0.97,
+      };
 
       for (final enrollment in _enrollments.where((e) => e.tenantId == tenant.id)) {
         if (enrollment.isExempt) continue;
@@ -528,24 +630,30 @@ class SeedGenerator {
 
         final group = _groups.firstWhere((g) => g.id == enrollment.groupId);
         final grade = _grades.firstWhere((g) => g.id == group.gradeId);
-        final base = group.price ?? grade.publicPrice;
-        final amount = (base * (100 - enrollment.discountPercent) / 100).roundToDouble();
+        final amount = PricingService.monthlyPrice(
+          enrollment: enrollment,
+          group: group,
+          grade: grade,
+        );
 
         final maxDay = monthOffset == 0 ? min(_today.day, 10) : 12;
         final paidAt = DateTime(month.year, month.month, 1 + _r.nextInt(maxDay), 16, 30);
         final method = _paymentMethod(tenant);
-        _payments.add(Payment(
-          id: _id('pay'),
-          tenantId: tenant.id,
-          studentId: enrollment.studentId,
-          month: key,
-          amount: amount,
-          method: method,
-          referenceNumber:
-              method == PaymentMethod.cash ? null : '${1000000000 + _r.nextInt(899999999)}',
-          recordedBy: recorder,
-          createdAt: paidAt,
-        ));
+        _payments.add(
+          Payment(
+            id: _id('pay'),
+            tenantId: tenant.id,
+            studentId: enrollment.studentId,
+            month: key,
+            amount: amount,
+            method: method,
+            referenceNumber: method == PaymentMethod.cash
+                ? null
+                : '${1000000000 + _r.nextInt(899999999)}',
+            recordedBy: recorder,
+            createdAt: paidAt,
+          ),
+        );
       }
     }
   }
@@ -586,15 +694,17 @@ class SeedGenerator {
       while (remaining > 0) {
         final qty = min(remaining, 1 + _r.nextInt(6));
         remaining -= qty;
-        _sales.add(SheetSale(
-          id: _id('sale'),
-          tenantId: mainTenantId,
-          sheetId: sheet.id,
-          date: _today.subtract(Duration(days: 1 + _r.nextInt(40))),
-          qty: qty,
-          total: qty * price,
-          recordedBy: assistantUserId,
-        ));
+        _sales.add(
+          SheetSale(
+            id: _id('sale'),
+            tenantId: mainTenantId,
+            sheetId: sheet.id,
+            date: _today.subtract(Duration(days: 1 + _r.nextInt(40))),
+            qty: qty,
+            total: qty * price,
+            recordedBy: assistantUserId,
+          ),
+        );
       }
     }
   }
@@ -631,14 +741,16 @@ class SeedGenerator {
         if (took && maxScore != null) {
           score = ((maxScore * (0.45 + _r.nextDouble() * 0.55)) * 2).round() / 2;
         }
-        _results.add(AssessmentResult(
-          id: _id('res'),
-          tenantId: mainTenantId,
-          assessmentId: assessment.id,
-          studentId: studentId,
-          delivered: took,
-          score: score,
-        ));
+        _results.add(
+          AssessmentResult(
+            id: _id('res'),
+            tenantId: mainTenantId,
+            assessmentId: assessment.id,
+            studentId: studentId,
+            delivered: took,
+            score: score,
+          ),
+        );
       }
     }
   }
@@ -821,20 +933,24 @@ class SeedGenerator {
       void add(String title, ExpenseCategory category, double amount, int day) {
         final date = DateTime(month.year, month.month, day);
         if (date.isAfter(_today)) return;
-        _expenses.add(Expense(
-          id: _id('exp'),
-          tenantId: mainTenantId,
-          title: title,
-          category: category,
-          amount: amount,
-          date: date,
-        ));
+        _expenses.add(
+          Expense(
+            id: _id('exp'),
+            tenantId: mainTenantId,
+            title: title,
+            category: category,
+            amount: amount,
+            date: date,
+          ),
+        );
       }
 
       add('إيجار القاعة', ExpenseCategory.rent, 3000, 1);
       add('طباعة مذكرات', ExpenseCategory.printing, 600 + _r.nextInt(10) * 100.0, 8);
       add('رواتب المساعدين', ExpenseCategory.salaries, 4000, 25);
-      if (_r.nextBool()) add('مصروفات متنوعة', ExpenseCategory.other, 150 + _r.nextInt(6) * 50.0, 15);
+      if (_r.nextBool()) {
+        add('مصروفات متنوعة', ExpenseCategory.other, 150 + _r.nextInt(6) * 50.0, 15);
+      }
     }
   }
 
@@ -843,33 +959,71 @@ class SeedGenerator {
 
   void _createNotifications() {
     DateTime ago(int hours) => now.subtract(Duration(hours: hours));
-    AppNotification n(String userId, String title, String body, NotificationType type,
-            DateTime at, {bool read = false, String? tenantId = mainTenantId}) =>
-        AppNotification(
-          id: _id('ntf'),
-          userId: userId,
-          tenantId: tenantId,
-          title: title,
-          body: body,
-          type: type,
-          read: read,
-          createdAt: at,
-        );
+    AppNotification n(
+      String userId,
+      String title,
+      String body,
+      NotificationType type,
+      DateTime at, {
+      bool read = false,
+      String? tenantId = mainTenantId,
+    }) => AppNotification(
+      id: _id('ntf'),
+      userId: userId,
+      tenantId: tenantId,
+      title: title,
+      body: body,
+      type: type,
+      read: read,
+      createdAt: at,
+    );
 
     _notifications.addAll([
       n(teacherUserId, 'طلب جديد', 'طلب غياب جديد من طالب', NotificationType.request, ago(2)),
-      n(teacherUserId, 'طلب نقل مجموعة', 'ولي أمر يطلب نقل ابنته لمجموعة أخرى',
-          NotificationType.request, ago(20)),
-      n(studentUserId(0), 'إعلان جديد', 'امتحان الشهر يوم الخميس القادم',
-          NotificationType.announcement, ago(22)),
-      n(studentUserId(0), 'تنبيه', 'برجاء الالتزام بتسليم الواجب في موعده',
-          NotificationType.complaint, ago(110), read: true),
-      n(parentUserId(0), 'إعلان جديد', 'امتحان الشهر يوم الخميس القادم',
-          NotificationType.announcement, ago(22)),
-      n(parentUserId(0), 'شكوى', 'تكرر الغياب بدون عذر خلال الأسبوعين الماضيين',
-          NotificationType.complaint, ago(70), read: true),
-      n(assistantUserId, 'إعلان جديد', 'امتحان الشهر يوم الخميس القادم',
-          NotificationType.announcement, ago(22)),
+      n(
+        teacherUserId,
+        'طلب نقل مجموعة',
+        'ولي أمر يطلب نقل ابنته لمجموعة أخرى',
+        NotificationType.request,
+        ago(20),
+      ),
+      n(
+        studentUserId(0),
+        'إعلان جديد',
+        'امتحان الشهر يوم الخميس القادم',
+        NotificationType.announcement,
+        ago(22),
+      ),
+      n(
+        studentUserId(0),
+        'تنبيه',
+        'برجاء الالتزام بتسليم الواجب في موعده',
+        NotificationType.complaint,
+        ago(110),
+        read: true,
+      ),
+      n(
+        parentUserId(0),
+        'إعلان جديد',
+        'امتحان الشهر يوم الخميس القادم',
+        NotificationType.announcement,
+        ago(22),
+      ),
+      n(
+        parentUserId(0),
+        'شكوى',
+        'تكرر الغياب بدون عذر خلال الأسبوعين الماضيين',
+        NotificationType.complaint,
+        ago(70),
+        read: true,
+      ),
+      n(
+        assistantUserId,
+        'إعلان جديد',
+        'امتحان الشهر يوم الخميس القادم',
+        NotificationType.announcement,
+        ago(22),
+      ),
     ]);
   }
 
@@ -883,8 +1037,9 @@ class SeedGenerator {
   String _linkCode() {
     const alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
     while (true) {
-      final code =
-          String.fromCharCodes(List.generate(6, (_) => alphabet.codeUnitAt(_r.nextInt(alphabet.length))));
+      final code = String.fromCharCodes(
+        List.generate(6, (_) => alphabet.codeUnitAt(_r.nextInt(alphabet.length))),
+      );
       if (_usedLinkCodes.add(code)) return code;
     }
   }
