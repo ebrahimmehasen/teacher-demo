@@ -35,10 +35,8 @@ class MockGroupRepository implements GroupRepository {
   final MockDatabase _db;
 
   @override
-  Stream<List<Group>> watchByTenant(String tenantId) => _db.groups.watch(
-        (g) => g.tenantId == tenantId,
-        sort: (a, b) => a.number.compareTo(b.number),
-      );
+  Stream<List<Group>> watchByTenant(String tenantId) =>
+      _db.groups.watch((g) => g.tenantId == tenantId, sort: (a, b) => a.number.compareTo(b.number));
 
   @override
   Future<Group?> getById(String tenantId, String id) async {
@@ -107,6 +105,13 @@ class MockEnrollmentRepository implements EnrollmentRepository {
     await _db.delay();
     _db.enrollments.replace(enrollment);
   }
+
+  @override
+  Future<void> updateAll(List<Enrollment> enrollments) async {
+    await _db.delay();
+    final byId = {for (final e in enrollments) e.id: e};
+    _db.enrollments.updateWhere((e) => byId.containsKey(e.id), (e) => byId[e.id]!);
+  }
 }
 
 class MockAttendanceRepository implements AttendanceRepository {
@@ -120,16 +125,15 @@ class MockAttendanceRepository implements AttendanceRepository {
     DateTime? to,
     String? studentId,
     String? groupId,
-  }) =>
-      _db.attendance.watch(
-        (a) =>
-            a.tenantId == tenantId &&
-            (from == null || !a.date.isBefore(from)) &&
-            (to == null || !a.date.isAfter(to)) &&
-            (studentId == null || a.studentId == studentId) &&
-            (groupId == null || a.groupId == groupId),
-        sort: (a, b) => b.date.compareTo(a.date),
-      );
+  }) => _db.attendance.watch(
+    (a) =>
+        a.tenantId == tenantId &&
+        (from == null || !a.date.isBefore(from)) &&
+        (to == null || !a.date.isAfter(to)) &&
+        (studentId == null || a.studentId == studentId) &&
+        (groupId == null || a.groupId == groupId),
+    sort: (a, b) => b.date.compareTo(a.date),
+  );
 
   @override
   Future<Attendance> add(Attendance attendance) async {
@@ -157,22 +161,21 @@ class MockAssessmentRepository implements AssessmentRepository {
 
   @override
   Stream<List<Assessment>> watchAssessments(String tenantId) => _db.assessments.watch(
-        (a) => a.tenantId == tenantId,
-        sort: (a, b) => b.date.compareTo(a.date),
-      );
+    (a) => a.tenantId == tenantId,
+    sort: (a, b) => b.date.compareTo(a.date),
+  );
 
   @override
   Stream<List<AssessmentResult>> watchResults(
     String tenantId, {
     String? assessmentId,
     String? studentId,
-  }) =>
-      _db.assessmentResults.watch(
-        (r) =>
-            r.tenantId == tenantId &&
-            (assessmentId == null || r.assessmentId == assessmentId) &&
-            (studentId == null || r.studentId == studentId),
-      );
+  }) => _db.assessmentResults.watch(
+    (r) =>
+        r.tenantId == tenantId &&
+        (assessmentId == null || r.assessmentId == assessmentId) &&
+        (studentId == null || r.studentId == studentId),
+  );
 
   @override
   Future<Assessment> addAssessment(Assessment assessment) async {
@@ -194,9 +197,9 @@ class MockLessonRepository implements LessonRepository {
 
   @override
   Stream<List<RecordedLesson>> watchByTenant(String tenantId) => _db.lessons.watch(
-        (l) => l.tenantId == tenantId,
-        sort: (a, b) => b.createdAt.compareTo(a.createdAt),
-      );
+    (l) => l.tenantId == tenantId,
+    sort: (a, b) => b.createdAt.compareTo(a.createdAt),
+  );
 
   @override
   Future<RecordedLesson> add(RecordedLesson lesson) async {
