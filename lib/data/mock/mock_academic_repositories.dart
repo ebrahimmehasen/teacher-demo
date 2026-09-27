@@ -118,6 +118,20 @@ class MockAttendanceRepository implements AttendanceRepository {
   MockAttendanceRepository(this._db);
   final MockDatabase _db;
 
+  static bool Function(Attendance) _filter(
+    String tenantId,
+    DateTime? from,
+    DateTime? to,
+    String? studentId,
+    String? groupId,
+  ) =>
+      (a) =>
+          a.tenantId == tenantId &&
+          (from == null || !a.date.isBefore(from)) &&
+          (to == null || !a.date.isAfter(to)) &&
+          (studentId == null || a.studentId == studentId) &&
+          (groupId == null || a.groupId == groupId);
+
   @override
   Stream<List<Attendance>> watchByTenant(
     String tenantId, {
@@ -126,14 +140,21 @@ class MockAttendanceRepository implements AttendanceRepository {
     String? studentId,
     String? groupId,
   }) => _db.attendance.watch(
-    (a) =>
-        a.tenantId == tenantId &&
-        (from == null || !a.date.isBefore(from)) &&
-        (to == null || !a.date.isAfter(to)) &&
-        (studentId == null || a.studentId == studentId) &&
-        (groupId == null || a.groupId == groupId),
+    _filter(tenantId, from, to, studentId, groupId),
     sort: (a, b) => b.date.compareTo(a.date),
   );
+
+  @override
+  Future<List<Attendance>> query(
+    String tenantId, {
+    DateTime? from,
+    DateTime? to,
+    String? studentId,
+    String? groupId,
+  }) async {
+    await _db.delay();
+    return _db.attendance.where(_filter(tenantId, from, to, studentId, groupId));
+  }
 
   @override
   Future<Attendance> add(Attendance attendance) async {
@@ -146,6 +167,12 @@ class MockAttendanceRepository implements AttendanceRepository {
   Future<void> update(Attendance attendance) async {
     await _db.delay();
     _db.attendance.replace(attendance);
+  }
+
+  @override
+  Future<void> upsertAll(List<Attendance> records) async {
+    await _db.delay();
+    _db.attendance.upsertAll(records);
   }
 
   @override
@@ -188,6 +215,12 @@ class MockAssessmentRepository implements AssessmentRepository {
   Future<void> upsertResult(AssessmentResult result) async {
     await _db.delay();
     _db.assessmentResults.upsert(result);
+  }
+
+  @override
+  Future<void> upsertResults(List<AssessmentResult> results) async {
+    await _db.delay();
+    _db.assessmentResults.upsertAll(results);
   }
 }
 
