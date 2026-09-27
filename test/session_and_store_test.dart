@@ -12,9 +12,7 @@ ProviderContainer _container() {
     SeedGenerator(now: DateTime(2026, 9, 27, 12)).generate(),
     latency: () => Duration.zero,
   );
-  final container = ProviderContainer(
-    overrides: [mockDatabaseProvider.overrideWithValue(db)],
-  );
+  final container = ProviderContainer(overrides: [mockDatabaseProvider.overrideWithValue(db)]);
   addTearDown(container.dispose);
   return container;
 }
@@ -22,9 +20,7 @@ ProviderContainer _container() {
 void main() {
   group('SessionController', () {
     Future<Session> signIn(ProviderContainer c, String phone) async {
-      await c
-          .read(sessionProvider.notifier)
-          .signIn(phone: phone, password: DemoAccounts.password);
+      await c.read(sessionProvider.notifier).signIn(phone: phone, password: DemoAccounts.password);
       // Read into a typed local: Riverpod 3's read() mis-infers under a `return ...!` context.
       final Session? session = c.read(sessionProvider);
       return session!;
@@ -89,20 +85,24 @@ void main() {
       expect(emissions.last.every((a) => a.tenantId == SeedGenerator.mainTenantId), isTrue);
       final before = emissions.last.length;
 
-      await repo.add(Announcement(
-        id: 'new',
-        tenantId: SeedGenerator.mainTenantId,
-        title: 't',
-        body: 'b',
-        createdAt: DateTime(2026, 9, 27, 13),
-      ));
-      await repo.add(Announcement(
-        id: 'other-tenant',
-        tenantId: SeedGenerator.secondTenantId,
-        title: 't',
-        body: 'b',
-        createdAt: DateTime(2026, 9, 27, 13),
-      ));
+      await repo.add(
+        Announcement(
+          id: 'new',
+          tenantId: SeedGenerator.mainTenantId,
+          title: 't',
+          body: 'b',
+          createdAt: DateTime(2026, 9, 27, 13),
+        ),
+      );
+      await repo.add(
+        Announcement(
+          id: 'other-tenant',
+          tenantId: SeedGenerator.secondTenantId,
+          title: 't',
+          body: 'b',
+          createdAt: DateTime(2026, 9, 27, 13),
+        ),
+      );
       await pumpEventQueue();
 
       expect(emissions.last, hasLength(before + 1));
