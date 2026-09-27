@@ -12,11 +12,11 @@ class GroupSession {
   }) : assert(weekday >= DateTime.monday && weekday <= DateTime.sunday);
 
   factory GroupSession.fromJson(Map<String, dynamic> json) => GroupSession(
-        weekday: json['weekday'] as int,
-        periodIndex: json['periodIndex'] as int,
-        startTime: ClockTime.parse(json['startTime'] as String),
-        endTime: ClockTime.parse(json['endTime'] as String),
-      );
+    weekday: json['weekday'] as int,
+    periodIndex: json['periodIndex'] as int,
+    startTime: ClockTime.parse(json['startTime'] as String),
+    endTime: ClockTime.parse(json['endTime'] as String),
+  );
 
   /// Same convention as [DateTime.weekday] (Monday = 1 ... Sunday = 7).
   final int weekday;
@@ -31,20 +31,19 @@ class GroupSession {
     int? periodIndex,
     ClockTime? startTime,
     ClockTime? endTime,
-  }) =>
-      GroupSession(
-        weekday: weekday ?? this.weekday,
-        periodIndex: periodIndex ?? this.periodIndex,
-        startTime: startTime ?? this.startTime,
-        endTime: endTime ?? this.endTime,
-      );
+  }) => GroupSession(
+    weekday: weekday ?? this.weekday,
+    periodIndex: periodIndex ?? this.periodIndex,
+    startTime: startTime ?? this.startTime,
+    endTime: endTime ?? this.endTime,
+  );
 
   Map<String, dynamic> toJson() => {
-        'weekday': weekday,
-        'periodIndex': periodIndex,
-        'startTime': startTime.toJson(),
-        'endTime': endTime.toJson(),
-      };
+    'weekday': weekday,
+    'periodIndex': periodIndex,
+    'startTime': startTime.toJson(),
+    'endTime': endTime.toJson(),
+  };
 
   @override
   bool operator ==(Object other) =>
@@ -72,19 +71,18 @@ class Group {
   });
 
   factory Group.fromJson(Map<String, dynamic> json) => Group(
-        id: json['id'] as String,
-        tenantId: json['tenantId'] as String,
-        gradeId: json['gradeId'] as String,
-        number: json['number'] as int,
-        type: GroupType.values.byName(json['type'] as String),
-        capacity: json['capacity'] as int,
-        price: (json['price'] as num?)?.toDouble(),
-        address: json['address'] as String?,
-        sessions: [
-          for (final s in json['sessions'] as List)
-            GroupSession.fromJson(s as Map<String, dynamic>),
-        ],
-      );
+    id: json['id'] as String,
+    tenantId: json['tenantId'] as String,
+    gradeId: json['gradeId'] as String,
+    number: json['number'] as int,
+    type: GroupType.values.byName(json['type'] as String),
+    capacity: json['capacity'] as int,
+    price: (json['price'] as num?)?.toDouble(),
+    address: json['address'] as String?,
+    sessions: [
+      for (final s in json['sessions'] as List) GroupSession.fromJson(s as Map<String, dynamic>),
+    ],
+  );
 
   final String id;
   final String tenantId;
@@ -112,30 +110,29 @@ class Group {
     double? price,
     String? address,
     List<GroupSession>? sessions,
-  }) =>
-      Group(
-        id: id,
-        tenantId: tenantId,
-        gradeId: gradeId ?? this.gradeId,
-        number: number ?? this.number,
-        type: type ?? this.type,
-        capacity: capacity ?? this.capacity,
-        price: price ?? this.price,
-        address: address ?? this.address,
-        sessions: sessions ?? this.sessions,
-      );
+  }) => Group(
+    id: id,
+    tenantId: tenantId,
+    gradeId: gradeId ?? this.gradeId,
+    number: number ?? this.number,
+    type: type ?? this.type,
+    capacity: capacity ?? this.capacity,
+    price: price ?? this.price,
+    address: address ?? this.address,
+    sessions: sessions ?? this.sessions,
+  );
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'tenantId': tenantId,
-        'gradeId': gradeId,
-        'number': number,
-        'type': type.name,
-        'capacity': capacity,
-        'price': price,
-        'address': address,
-        'sessions': [for (final s in sessions) s.toJson()],
-      };
+    'id': id,
+    'tenantId': tenantId,
+    'gradeId': gradeId,
+    'number': number,
+    'type': type.name,
+    'capacity': capacity,
+    'price': price,
+    'address': address,
+    'sessions': [for (final s in sessions) s.toJson()],
+  };
 
   @override
   bool operator ==(Object other) =>
@@ -151,18 +148,25 @@ class Group {
       listEquals(other.sessions, sessions);
 
   @override
-  int get hashCode => Object.hash(id, tenantId, gradeId, number, type, capacity, price,
-      address, Object.hashAll(sessions));
+  int get hashCode => Object.hash(
+    id,
+    tenantId,
+    gradeId,
+    number,
+    type,
+    capacity,
+    price,
+    address,
+    Object.hashAll(sessions),
+  );
 }
 
 /// Number of rows (periods) in a tenant's weekly schedule grid.
 class SchedulePeriods {
   const SchedulePeriods({required this.tenantId, this.count = 6});
 
-  factory SchedulePeriods.fromJson(Map<String, dynamic> json) => SchedulePeriods(
-        tenantId: json['tenantId'] as String,
-        count: json['count'] as int,
-      );
+  factory SchedulePeriods.fromJson(Map<String, dynamic> json) =>
+      SchedulePeriods(tenantId: json['tenantId'] as String, count: json['count'] as int);
 
   final String tenantId;
   final int count;
