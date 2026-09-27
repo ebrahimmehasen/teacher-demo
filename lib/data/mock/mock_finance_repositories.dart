@@ -35,10 +35,8 @@ class MockExpenseRepository implements ExpenseRepository {
   final MockDatabase _db;
 
   @override
-  Stream<List<Expense>> watchByTenant(String tenantId) => _db.expenses.watch(
-        (e) => e.tenantId == tenantId,
-        sort: (a, b) => b.date.compareTo(a.date),
-      );
+  Stream<List<Expense>> watchByTenant(String tenantId) =>
+      _db.expenses.watch((e) => e.tenantId == tenantId, sort: (a, b) => b.date.compareTo(a.date));
 
   @override
   Future<Expense> add(Expense expense) async {
@@ -66,15 +64,13 @@ class MockSheetRepository implements SheetRepository {
 
   @override
   Stream<List<Sheet>> watchSheets(String tenantId) => _db.sheets.watch(
-        (s) => s.tenantId == tenantId,
-        sort: (a, b) => b.createdAt.compareTo(a.createdAt),
-      );
+    (s) => s.tenantId == tenantId,
+    sort: (a, b) => b.createdAt.compareTo(a.createdAt),
+  );
 
   @override
-  Stream<List<SheetSale>> watchSales(String tenantId) => _db.sheetSales.watch(
-        (s) => s.tenantId == tenantId,
-        sort: (a, b) => b.date.compareTo(a.date),
-      );
+  Stream<List<SheetSale>> watchSales(String tenantId) =>
+      _db.sheetSales.watch((s) => s.tenantId == tenantId, sort: (a, b) => b.date.compareTo(a.date));
 
   @override
   Future<Sheet> addSheet(Sheet sheet) async {
