@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../core/constants/labels.dart';
 import '../core/utils/date_utils.dart';
 import '../data/models/models.dart';
 import '../data/repository_providers.dart';
@@ -47,6 +48,32 @@ final expensesProvider = StreamProvider<List<Expense>>((ref) {
 final sheetSalesProvider = StreamProvider<List<SheetSale>>((ref) {
   final tenantId = ref.watch(sessionProvider.select((s) => s?.tenantId));
   return _scoped(tenantId, ref.watch(sheetRepositoryProvider).watchSales);
+});
+
+final sheetsProvider = StreamProvider<List<Sheet>>((ref) {
+  final tenantId = ref.watch(sessionProvider.select((s) => s?.tenantId));
+  return _scoped(tenantId, ref.watch(sheetRepositoryProvider).watchSheets);
+});
+
+final assessmentsProvider = StreamProvider<List<Assessment>>((ref) {
+  final tenantId = ref.watch(sessionProvider.select((s) => s?.tenantId));
+  return _scoped(tenantId, ref.watch(assessmentRepositoryProvider).watchAssessments);
+});
+
+final assessmentResultsProvider = StreamProvider<List<AssessmentResult>>((ref) {
+  final tenantId = ref.watch(sessionProvider.select((s) => s?.tenantId));
+  return _scoped(tenantId, (id) => ref.watch(assessmentRepositoryProvider).watchResults(id));
+});
+
+/// "تالتة ثانوي – المجموعة الأولى" by group id.
+final groupLabelsProvider = Provider<Map<String, String>>((ref) {
+  final grades = {
+    for (final g in ref.watch(gradesProvider).asData?.value ?? const <Grade>[]) g.id: g.name,
+  };
+  return {
+    for (final g in ref.watch(groupsProvider).asData?.value ?? const <Group>[])
+      g.id: '${grades[g.gradeId] ?? ''} – ${GroupLabels.name(g.number)}',
+  };
 });
 
 /// Attendance of the last 60 days (enough for dashboards and monthly views).
