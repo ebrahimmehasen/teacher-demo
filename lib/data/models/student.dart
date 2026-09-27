@@ -7,10 +7,10 @@ class StudentProfile {
   });
 
   factory StudentProfile.fromJson(Map<String, dynamic> json) => StudentProfile(
-        userId: json['userId'] as String,
-        schoolYear: json['schoolYear'] as String,
-        parentLinkCode: json['parentLinkCode'] as String,
-      );
+    userId: json['userId'] as String,
+    schoolYear: json['schoolYear'] as String,
+    parentLinkCode: json['parentLinkCode'] as String,
+  );
 
   final String userId;
   final String schoolYear;
@@ -19,16 +19,16 @@ class StudentProfile {
   final String parentLinkCode;
 
   StudentProfile copyWith({String? schoolYear, String? parentLinkCode}) => StudentProfile(
-        userId: userId,
-        schoolYear: schoolYear ?? this.schoolYear,
-        parentLinkCode: parentLinkCode ?? this.parentLinkCode,
-      );
+    userId: userId,
+    schoolYear: schoolYear ?? this.schoolYear,
+    parentLinkCode: parentLinkCode ?? this.parentLinkCode,
+  );
 
   Map<String, dynamic> toJson() => {
-        'userId': userId,
-        'schoolYear': schoolYear,
-        'parentLinkCode': parentLinkCode,
-      };
+    'userId': userId,
+    'schoolYear': schoolYear,
+    'parentLinkCode': parentLinkCode,
+  };
 
   @override
   bool operator ==(Object other) =>
@@ -45,17 +45,14 @@ class ParentLink {
   const ParentLink({required this.parentUserId, required this.studentUserId});
 
   factory ParentLink.fromJson(Map<String, dynamic> json) => ParentLink(
-        parentUserId: json['parentUserId'] as String,
-        studentUserId: json['studentUserId'] as String,
-      );
+    parentUserId: json['parentUserId'] as String,
+    studentUserId: json['studentUserId'] as String,
+  );
 
   final String parentUserId;
   final String studentUserId;
 
-  Map<String, dynamic> toJson() => {
-        'parentUserId': parentUserId,
-        'studentUserId': studentUserId,
-      };
+  Map<String, dynamic> toJson() => {'parentUserId': parentUserId, 'studentUserId': studentUserId};
 
   @override
   bool operator ==(Object other) =>
@@ -81,15 +78,15 @@ class Enrollment {
   }) : assert(discountPercent >= 0 && discountPercent <= 100);
 
   factory Enrollment.fromJson(Map<String, dynamic> json) => Enrollment(
-        id: json['id'] as String,
-        tenantId: json['tenantId'] as String,
-        studentId: json['studentId'] as String,
-        groupId: json['groupId'] as String,
-        isExempt: json['isExempt'] as bool,
-        discountPercent: json['discountPercent'] as int,
-        joinedAt: DateTime.parse(json['joinedAt'] as String),
-        active: json['active'] as bool,
-      );
+    id: json['id'] as String,
+    tenantId: json['tenantId'] as String,
+    studentId: json['studentId'] as String,
+    groupId: json['groupId'] as String,
+    isExempt: json['isExempt'] as bool,
+    discountPercent: json['discountPercent'] as int,
+    joinedAt: DateTime.parse(json['joinedAt'] as String),
+    active: json['active'] as bool,
+  );
 
   final String id;
   final String tenantId;
@@ -100,12 +97,7 @@ class Enrollment {
   final DateTime joinedAt;
   final bool active;
 
-  Enrollment copyWith({
-    String? groupId,
-    bool? isExempt,
-    int? discountPercent,
-    bool? active,
-  }) =>
+  Enrollment copyWith({String? groupId, bool? isExempt, int? discountPercent, bool? active}) =>
       Enrollment(
         id: id,
         tenantId: tenantId,
@@ -118,15 +110,15 @@ class Enrollment {
       );
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'tenantId': tenantId,
-        'studentId': studentId,
-        'groupId': groupId,
-        'isExempt': isExempt,
-        'discountPercent': discountPercent,
-        'joinedAt': joinedAt.toIso8601String(),
-        'active': active,
-      };
+    'id': id,
+    'tenantId': tenantId,
+    'studentId': studentId,
+    'groupId': groupId,
+    'isExempt': isExempt,
+    'discountPercent': discountPercent,
+    'joinedAt': joinedAt.toIso8601String(),
+    'active': active,
+  };
 
   @override
   bool operator ==(Object other) =>
@@ -141,6 +133,6 @@ class Enrollment {
       other.active == active;
 
   @override
-  int get hashCode => Object.hash(
-      id, tenantId, studentId, groupId, isExempt, discountPercent, joinedAt, active);
+  int get hashCode =>
+      Object.hash(id, tenantId, studentId, groupId, isExempt, discountPercent, joinedAt, active);
 }
