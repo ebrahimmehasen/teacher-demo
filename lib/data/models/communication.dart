@@ -18,19 +18,19 @@ class Request {
   });
 
   factory Request.fromJson(Map<String, dynamic> json) => Request(
-        id: json['id'] as String,
-        tenantId: json['tenantId'] as String,
-        fromUserId: json['fromUserId'] as String,
-        fromRole: UserRole.values.byName(json['fromRole'] as String),
-        studentId: json['studentId'] as String,
-        type: RequestType.values.byName(json['type'] as String),
-        text: json['text'] as String,
-        requestedGroupId: json['requestedGroupId'] as String?,
-        date: json['date'] == null ? null : DateTime.parse(json['date'] as String),
-        status: RequestStatus.values.byName(json['status'] as String),
-        reply: json['reply'] as String?,
-        createdAt: DateTime.parse(json['createdAt'] as String),
-      );
+    id: json['id'] as String,
+    tenantId: json['tenantId'] as String,
+    fromUserId: json['fromUserId'] as String,
+    fromRole: UserRole.values.byName(json['fromRole'] as String),
+    studentId: json['studentId'] as String,
+    type: RequestType.values.byName(json['type'] as String),
+    text: json['text'] as String,
+    requestedGroupId: json['requestedGroupId'] as String?,
+    date: json['date'] == null ? null : DateTime.parse(json['date'] as String),
+    status: RequestStatus.values.byName(json['status'] as String),
+    reply: json['reply'] as String?,
+    createdAt: DateTime.parse(json['createdAt'] as String),
+  );
 
   final String id;
   final String tenantId;
@@ -50,34 +50,34 @@ class Request {
   final DateTime createdAt;
 
   Request copyWith({RequestStatus? status, String? reply}) => Request(
-        id: id,
-        tenantId: tenantId,
-        fromUserId: fromUserId,
-        fromRole: fromRole,
-        studentId: studentId,
-        type: type,
-        text: text,
-        requestedGroupId: requestedGroupId,
-        date: date,
-        status: status ?? this.status,
-        reply: reply ?? this.reply,
-        createdAt: createdAt,
-      );
+    id: id,
+    tenantId: tenantId,
+    fromUserId: fromUserId,
+    fromRole: fromRole,
+    studentId: studentId,
+    type: type,
+    text: text,
+    requestedGroupId: requestedGroupId,
+    date: date,
+    status: status ?? this.status,
+    reply: reply ?? this.reply,
+    createdAt: createdAt,
+  );
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'tenantId': tenantId,
-        'fromUserId': fromUserId,
-        'fromRole': fromRole.name,
-        'studentId': studentId,
-        'type': type.name,
-        'text': text,
-        'requestedGroupId': requestedGroupId,
-        'date': date?.toIso8601String(),
-        'status': status.name,
-        'reply': reply,
-        'createdAt': createdAt.toIso8601String(),
-      };
+    'id': id,
+    'tenantId': tenantId,
+    'fromUserId': fromUserId,
+    'fromRole': fromRole.name,
+    'studentId': studentId,
+    'type': type.name,
+    'text': text,
+    'requestedGroupId': requestedGroupId,
+    'date': date?.toIso8601String(),
+    'status': status.name,
+    'reply': reply,
+    'createdAt': createdAt.toIso8601String(),
+  };
 
   @override
   bool operator ==(Object other) =>
@@ -96,8 +96,20 @@ class Request {
       other.createdAt == createdAt;
 
   @override
-  int get hashCode => Object.hash(id, tenantId, fromUserId, fromRole, studentId, type, text,
-      requestedGroupId, date, status, reply, createdAt);
+  int get hashCode => Object.hash(
+    id,
+    tenantId,
+    fromUserId,
+    fromRole,
+    studentId,
+    type,
+    text,
+    requestedGroupId,
+    date,
+    status,
+    reply,
+    createdAt,
+  );
 }
 
 /// A complaint sent to a parent, or a warning sent to a student, by the teacher/staff.
@@ -114,15 +126,15 @@ class Complaint {
   });
 
   factory Complaint.fromJson(Map<String, dynamic> json) => Complaint(
-        id: json['id'] as String,
-        tenantId: json['tenantId'] as String,
-        studentId: json['studentId'] as String,
-        toRole: UserRole.values.byName(json['toRole'] as String),
-        kind: ComplaintKind.values.byName(json['kind'] as String),
-        text: json['text'] as String,
-        byUserId: json['byUserId'] as String,
-        createdAt: DateTime.parse(json['createdAt'] as String),
-      );
+    id: json['id'] as String,
+    tenantId: json['tenantId'] as String,
+    studentId: json['studentId'] as String,
+    toRole: UserRole.values.byName(json['toRole'] as String),
+    kind: ComplaintKind.values.byName(json['kind'] as String),
+    text: json['text'] as String,
+    byUserId: json['byUserId'] as String,
+    createdAt: DateTime.parse(json['createdAt'] as String),
+  );
 
   final String id;
   final String tenantId;
@@ -136,26 +148,26 @@ class Complaint {
   final DateTime createdAt;
 
   Complaint copyWith({String? text}) => Complaint(
-        id: id,
-        tenantId: tenantId,
-        studentId: studentId,
-        toRole: toRole,
-        kind: kind,
-        text: text ?? this.text,
-        byUserId: byUserId,
-        createdAt: createdAt,
-      );
+    id: id,
+    tenantId: tenantId,
+    studentId: studentId,
+    toRole: toRole,
+    kind: kind,
+    text: text ?? this.text,
+    byUserId: byUserId,
+    createdAt: createdAt,
+  );
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'tenantId': tenantId,
-        'studentId': studentId,
-        'toRole': toRole.name,
-        'kind': kind.name,
-        'text': text,
-        'byUserId': byUserId,
-        'createdAt': createdAt.toIso8601String(),
-      };
+    'id': id,
+    'tenantId': tenantId,
+    'studentId': studentId,
+    'toRole': toRole.name,
+    'kind': kind.name,
+    'text': text,
+    'byUserId': byUserId,
+    'createdAt': createdAt.toIso8601String(),
+  };
 
   @override
   bool operator ==(Object other) =>
@@ -170,8 +182,7 @@ class Complaint {
       other.createdAt == createdAt;
 
   @override
-  int get hashCode =>
-      Object.hash(id, tenantId, studentId, toRole, kind, text, byUserId, createdAt);
+  int get hashCode => Object.hash(id, tenantId, studentId, toRole, kind, text, byUserId, createdAt);
 }
 
 class Announcement {
@@ -185,13 +196,13 @@ class Announcement {
   });
 
   factory Announcement.fromJson(Map<String, dynamic> json) => Announcement(
-        id: json['id'] as String,
-        tenantId: json['tenantId'] as String,
-        gradeId: json['gradeId'] as String?,
-        title: json['title'] as String,
-        body: json['body'] as String,
-        createdAt: DateTime.parse(json['createdAt'] as String),
-      );
+    id: json['id'] as String,
+    tenantId: json['tenantId'] as String,
+    gradeId: json['gradeId'] as String?,
+    title: json['title'] as String,
+    body: json['body'] as String,
+    createdAt: DateTime.parse(json['createdAt'] as String),
+  );
 
   final String id;
   final String tenantId;
@@ -205,22 +216,22 @@ class Announcement {
   bool get isForAll => gradeId == null;
 
   Announcement copyWith({String? gradeId, String? title, String? body}) => Announcement(
-        id: id,
-        tenantId: tenantId,
-        gradeId: gradeId ?? this.gradeId,
-        title: title ?? this.title,
-        body: body ?? this.body,
-        createdAt: createdAt,
-      );
+    id: id,
+    tenantId: tenantId,
+    gradeId: gradeId ?? this.gradeId,
+    title: title ?? this.title,
+    body: body ?? this.body,
+    createdAt: createdAt,
+  );
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'tenantId': tenantId,
-        'gradeId': gradeId,
-        'title': title,
-        'body': body,
-        'createdAt': createdAt.toIso8601String(),
-      };
+    'id': id,
+    'tenantId': tenantId,
+    'gradeId': gradeId,
+    'title': title,
+    'body': body,
+    'createdAt': createdAt.toIso8601String(),
+  };
 
   @override
   bool operator ==(Object other) =>
@@ -247,13 +258,13 @@ class RecordedLesson {
   });
 
   factory RecordedLesson.fromJson(Map<String, dynamic> json) => RecordedLesson(
-        id: json['id'] as String,
-        tenantId: json['tenantId'] as String,
-        gradeId: json['gradeId'] as String,
-        title: json['title'] as String,
-        driveUrl: json['driveUrl'] as String,
-        createdAt: DateTime.parse(json['createdAt'] as String),
-      );
+    id: json['id'] as String,
+    tenantId: json['tenantId'] as String,
+    gradeId: json['gradeId'] as String,
+    title: json['title'] as String,
+    driveUrl: json['driveUrl'] as String,
+    createdAt: DateTime.parse(json['createdAt'] as String),
+  );
 
   final String id;
   final String tenantId;
@@ -262,24 +273,23 @@ class RecordedLesson {
   final String driveUrl;
   final DateTime createdAt;
 
-  RecordedLesson copyWith({String? gradeId, String? title, String? driveUrl}) =>
-      RecordedLesson(
-        id: id,
-        tenantId: tenantId,
-        gradeId: gradeId ?? this.gradeId,
-        title: title ?? this.title,
-        driveUrl: driveUrl ?? this.driveUrl,
-        createdAt: createdAt,
-      );
+  RecordedLesson copyWith({String? gradeId, String? title, String? driveUrl}) => RecordedLesson(
+    id: id,
+    tenantId: tenantId,
+    gradeId: gradeId ?? this.gradeId,
+    title: title ?? this.title,
+    driveUrl: driveUrl ?? this.driveUrl,
+    createdAt: createdAt,
+  );
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'tenantId': tenantId,
-        'gradeId': gradeId,
-        'title': title,
-        'driveUrl': driveUrl,
-        'createdAt': createdAt.toIso8601String(),
-      };
+    'id': id,
+    'tenantId': tenantId,
+    'gradeId': gradeId,
+    'title': title,
+    'driveUrl': driveUrl,
+    'createdAt': createdAt.toIso8601String(),
+  };
 
   @override
   bool operator ==(Object other) =>
@@ -309,16 +319,16 @@ class AppNotification {
   });
 
   factory AppNotification.fromJson(Map<String, dynamic> json) => AppNotification(
-        id: json['id'] as String,
-        userId: json['userId'] as String,
-        tenantId: json['tenantId'] as String?,
-        title: json['title'] as String,
-        body: json['body'] as String,
-        type: NotificationType.values.byName(json['type'] as String),
-        read: json['read'] as bool,
-        createdAt: DateTime.parse(json['createdAt'] as String),
-        deepLink: json['deepLink'] as String?,
-      );
+    id: json['id'] as String,
+    userId: json['userId'] as String,
+    tenantId: json['tenantId'] as String?,
+    title: json['title'] as String,
+    body: json['body'] as String,
+    type: NotificationType.values.byName(json['type'] as String),
+    read: json['read'] as bool,
+    createdAt: DateTime.parse(json['createdAt'] as String),
+    deepLink: json['deepLink'] as String?,
+  );
 
   final String id;
   final String userId;
@@ -333,28 +343,28 @@ class AppNotification {
   final String? deepLink;
 
   AppNotification copyWith({bool? read}) => AppNotification(
-        id: id,
-        userId: userId,
-        tenantId: tenantId,
-        title: title,
-        body: body,
-        type: type,
-        read: read ?? this.read,
-        createdAt: createdAt,
-        deepLink: deepLink,
-      );
+    id: id,
+    userId: userId,
+    tenantId: tenantId,
+    title: title,
+    body: body,
+    type: type,
+    read: read ?? this.read,
+    createdAt: createdAt,
+    deepLink: deepLink,
+  );
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'userId': userId,
-        'tenantId': tenantId,
-        'title': title,
-        'body': body,
-        'type': type.name,
-        'read': read,
-        'createdAt': createdAt.toIso8601String(),
-        'deepLink': deepLink,
-      };
+    'id': id,
+    'userId': userId,
+    'tenantId': tenantId,
+    'title': title,
+    'body': body,
+    'type': type.name,
+    'read': read,
+    'createdAt': createdAt.toIso8601String(),
+    'deepLink': deepLink,
+  };
 
   @override
   bool operator ==(Object other) =>
