@@ -3,6 +3,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../features/assistant/assistant_shell.dart';
+import '../../features/assistant/grades/grades_entry_page.dart';
+import '../../features/assistant/home/assistant_home_page.dart';
+import '../../features/assistant/manual_attendance/manual_attendance_page.dart';
+import '../../features/assistant/payments/payments_page.dart';
+import '../../features/assistant/scanner/scanner_page.dart';
+import '../../features/assistant/sheets/sheet_sales_page.dart';
+import '../../features/assistant/students/assistant_students_page.dart';
+import '../../features/shared/attendance/attendance_log_page.dart';
 import '../../features/auth/login_page.dart';
 import '../../features/parent/parent_shell.dart';
 import '../../features/platform_admin/admin_shell.dart';
@@ -70,6 +78,15 @@ final Map<String, Widget Function()> _pages = {
   '/teacher/schedule': () => const SchedulePage(),
   '/teacher/students': () => const StudentsPage(),
   '/teacher/settings': () => const SettingsPage(),
+  '/teacher/attendance': () => const AttendanceLogPage(),
+  '/assistant/home': () => const AssistantHomePage(),
+  '/assistant/scanner': () => const ScannerPage(),
+  '/assistant/manual-attendance': () => const ManualAttendancePage(),
+  '/assistant/attendance': () => const AttendanceLogPage(),
+  '/assistant/students': () => const AssistantStudentsPage(),
+  '/assistant/payments': () => const PaymentsPage(),
+  '/assistant/sheets': () => const SheetSalesPage(),
+  '/assistant/grades': () => const GradesEntryPage(),
 };
 
 ShellRoute _roleShell(List<RoleDestination> destinations, _ShellBuilder shell) => ShellRoute(
