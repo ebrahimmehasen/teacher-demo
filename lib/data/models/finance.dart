@@ -15,17 +15,17 @@ class Payment {
   });
 
   factory Payment.fromJson(Map<String, dynamic> json) => Payment(
-        id: json['id'] as String,
-        tenantId: json['tenantId'] as String,
-        studentId: json['studentId'] as String,
-        month: json['month'] as String,
-        amount: (json['amount'] as num).toDouble(),
-        method: PaymentMethod.values.byName(json['method'] as String),
-        referenceNumber: json['referenceNumber'] as String?,
-        note: json['note'] as String?,
-        recordedBy: json['recordedBy'] as String,
-        createdAt: DateTime.parse(json['createdAt'] as String),
-      );
+    id: json['id'] as String,
+    tenantId: json['tenantId'] as String,
+    studentId: json['studentId'] as String,
+    month: json['month'] as String,
+    amount: (json['amount'] as num).toDouble(),
+    method: PaymentMethod.values.byName(json['method'] as String),
+    referenceNumber: json['referenceNumber'] as String?,
+    note: json['note'] as String?,
+    recordedBy: json['recordedBy'] as String,
+    createdAt: DateTime.parse(json['createdAt'] as String),
+  );
 
   final String id;
   final String tenantId;
@@ -46,32 +46,31 @@ class Payment {
     PaymentMethod? method,
     String? referenceNumber,
     String? note,
-  }) =>
-      Payment(
-        id: id,
-        tenantId: tenantId,
-        studentId: studentId,
-        month: month ?? this.month,
-        amount: amount ?? this.amount,
-        method: method ?? this.method,
-        referenceNumber: referenceNumber ?? this.referenceNumber,
-        note: note ?? this.note,
-        recordedBy: recordedBy,
-        createdAt: createdAt,
-      );
+  }) => Payment(
+    id: id,
+    tenantId: tenantId,
+    studentId: studentId,
+    month: month ?? this.month,
+    amount: amount ?? this.amount,
+    method: method ?? this.method,
+    referenceNumber: referenceNumber ?? this.referenceNumber,
+    note: note ?? this.note,
+    recordedBy: recordedBy,
+    createdAt: createdAt,
+  );
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'tenantId': tenantId,
-        'studentId': studentId,
-        'month': month,
-        'amount': amount,
-        'method': method.name,
-        'referenceNumber': referenceNumber,
-        'note': note,
-        'recordedBy': recordedBy,
-        'createdAt': createdAt.toIso8601String(),
-      };
+    'id': id,
+    'tenantId': tenantId,
+    'studentId': studentId,
+    'month': month,
+    'amount': amount,
+    'method': method.name,
+    'referenceNumber': referenceNumber,
+    'note': note,
+    'recordedBy': recordedBy,
+    'createdAt': createdAt.toIso8601String(),
+  };
 
   @override
   bool operator ==(Object other) =>
@@ -88,8 +87,18 @@ class Payment {
       other.createdAt == createdAt;
 
   @override
-  int get hashCode => Object.hash(id, tenantId, studentId, month, amount, method,
-      referenceNumber, note, recordedBy, createdAt);
+  int get hashCode => Object.hash(
+    id,
+    tenantId,
+    studentId,
+    month,
+    amount,
+    method,
+    referenceNumber,
+    note,
+    recordedBy,
+    createdAt,
+  );
 }
 
 class Expense {
@@ -104,14 +113,14 @@ class Expense {
   });
 
   factory Expense.fromJson(Map<String, dynamic> json) => Expense(
-        id: json['id'] as String,
-        tenantId: json['tenantId'] as String,
-        title: json['title'] as String,
-        category: ExpenseCategory.values.byName(json['category'] as String),
-        amount: (json['amount'] as num).toDouble(),
-        date: DateTime.parse(json['date'] as String),
-        note: json['note'] as String?,
-      );
+    id: json['id'] as String,
+    tenantId: json['tenantId'] as String,
+    title: json['title'] as String,
+    category: ExpenseCategory.values.byName(json['category'] as String),
+    amount: (json['amount'] as num).toDouble(),
+    date: DateTime.parse(json['date'] as String),
+    note: json['note'] as String?,
+  );
 
   final String id;
   final String tenantId;
@@ -127,26 +136,25 @@ class Expense {
     double? amount,
     DateTime? date,
     String? note,
-  }) =>
-      Expense(
-        id: id,
-        tenantId: tenantId,
-        title: title ?? this.title,
-        category: category ?? this.category,
-        amount: amount ?? this.amount,
-        date: date ?? this.date,
-        note: note ?? this.note,
-      );
+  }) => Expense(
+    id: id,
+    tenantId: tenantId,
+    title: title ?? this.title,
+    category: category ?? this.category,
+    amount: amount ?? this.amount,
+    date: date ?? this.date,
+    note: note ?? this.note,
+  );
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'tenantId': tenantId,
-        'title': title,
-        'category': category.name,
-        'amount': amount,
-        'date': date.toIso8601String(),
-        'note': note,
-      };
+    'id': id,
+    'tenantId': tenantId,
+    'title': title,
+    'category': category.name,
+    'amount': amount,
+    'date': date.toIso8601String(),
+    'note': note,
+  };
 
   @override
   bool operator ==(Object other) =>
@@ -176,14 +184,14 @@ class Sheet {
   });
 
   factory Sheet.fromJson(Map<String, dynamic> json) => Sheet(
-        id: json['id'] as String,
-        tenantId: json['tenantId'] as String,
-        gradeId: json['gradeId'] as String,
-        title: json['title'] as String,
-        price: (json['price'] as num).toDouble(),
-        printedQty: json['printedQty'] as int,
-        createdAt: DateTime.parse(json['createdAt'] as String),
-      );
+    id: json['id'] as String,
+    tenantId: json['tenantId'] as String,
+    gradeId: json['gradeId'] as String,
+    title: json['title'] as String,
+    price: (json['price'] as num).toDouble(),
+    printedQty: json['printedQty'] as int,
+    createdAt: DateTime.parse(json['createdAt'] as String),
+  );
 
   final String id;
   final String tenantId;
@@ -194,24 +202,24 @@ class Sheet {
   final DateTime createdAt;
 
   Sheet copyWith({String? gradeId, String? title, double? price, int? printedQty}) => Sheet(
-        id: id,
-        tenantId: tenantId,
-        gradeId: gradeId ?? this.gradeId,
-        title: title ?? this.title,
-        price: price ?? this.price,
-        printedQty: printedQty ?? this.printedQty,
-        createdAt: createdAt,
-      );
+    id: id,
+    tenantId: tenantId,
+    gradeId: gradeId ?? this.gradeId,
+    title: title ?? this.title,
+    price: price ?? this.price,
+    printedQty: printedQty ?? this.printedQty,
+    createdAt: createdAt,
+  );
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'tenantId': tenantId,
-        'gradeId': gradeId,
-        'title': title,
-        'price': price,
-        'printedQty': printedQty,
-        'createdAt': createdAt.toIso8601String(),
-      };
+    'id': id,
+    'tenantId': tenantId,
+    'gradeId': gradeId,
+    'title': title,
+    'price': price,
+    'printedQty': printedQty,
+    'createdAt': createdAt.toIso8601String(),
+  };
 
   @override
   bool operator ==(Object other) =>
@@ -225,8 +233,7 @@ class Sheet {
       other.createdAt == createdAt;
 
   @override
-  int get hashCode =>
-      Object.hash(id, tenantId, gradeId, title, price, printedQty, createdAt);
+  int get hashCode => Object.hash(id, tenantId, gradeId, title, price, printedQty, createdAt);
 }
 
 class SheetSale {
@@ -241,14 +248,14 @@ class SheetSale {
   });
 
   factory SheetSale.fromJson(Map<String, dynamic> json) => SheetSale(
-        id: json['id'] as String,
-        tenantId: json['tenantId'] as String,
-        sheetId: json['sheetId'] as String,
-        date: DateTime.parse(json['date'] as String),
-        qty: json['qty'] as int,
-        total: (json['total'] as num).toDouble(),
-        recordedBy: json['recordedBy'] as String,
-      );
+    id: json['id'] as String,
+    tenantId: json['tenantId'] as String,
+    sheetId: json['sheetId'] as String,
+    date: DateTime.parse(json['date'] as String),
+    qty: json['qty'] as int,
+    total: (json['total'] as num).toDouble(),
+    recordedBy: json['recordedBy'] as String,
+  );
 
   final String id;
   final String tenantId;
@@ -259,24 +266,24 @@ class SheetSale {
   final String recordedBy;
 
   SheetSale copyWith({DateTime? date, int? qty, double? total}) => SheetSale(
-        id: id,
-        tenantId: tenantId,
-        sheetId: sheetId,
-        date: date ?? this.date,
-        qty: qty ?? this.qty,
-        total: total ?? this.total,
-        recordedBy: recordedBy,
-      );
+    id: id,
+    tenantId: tenantId,
+    sheetId: sheetId,
+    date: date ?? this.date,
+    qty: qty ?? this.qty,
+    total: total ?? this.total,
+    recordedBy: recordedBy,
+  );
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'tenantId': tenantId,
-        'sheetId': sheetId,
-        'date': date.toIso8601String(),
-        'qty': qty,
-        'total': total,
-        'recordedBy': recordedBy,
-      };
+    'id': id,
+    'tenantId': tenantId,
+    'sheetId': sheetId,
+    'date': date.toIso8601String(),
+    'qty': qty,
+    'total': total,
+    'recordedBy': recordedBy,
+  };
 
   @override
   bool operator ==(Object other) =>
