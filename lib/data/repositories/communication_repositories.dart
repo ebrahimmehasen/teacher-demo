@@ -19,6 +19,8 @@ abstract interface class AnnouncementRepository {
 
 abstract interface class NotificationRepository {
   Stream<List<AppNotification>> watchForUser(String userId);
+
+  /// Notifications whose id already exists are ignored (idempotent reminders).
   Future<void> addAll(List<AppNotification> notifications);
   Future<void> markRead(String userId, String id);
   Future<void> markAllRead(String userId);
