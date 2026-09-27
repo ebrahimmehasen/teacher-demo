@@ -12,14 +12,14 @@ class Assessment {
   });
 
   factory Assessment.fromJson(Map<String, dynamic> json) => Assessment(
-        id: json['id'] as String,
-        tenantId: json['tenantId'] as String,
-        gradeId: json['gradeId'] as String,
-        type: AssessmentType.values.byName(json['type'] as String),
-        title: json['title'] as String,
-        date: DateTime.parse(json['date'] as String),
-        maxScore: (json['maxScore'] as num?)?.toDouble(),
-      );
+    id: json['id'] as String,
+    tenantId: json['tenantId'] as String,
+    gradeId: json['gradeId'] as String,
+    type: AssessmentType.values.byName(json['type'] as String),
+    title: json['title'] as String,
+    date: DateTime.parse(json['date'] as String),
+    maxScore: (json['maxScore'] as num?)?.toDouble(),
+  );
 
   final String id;
   final String tenantId;
@@ -37,26 +37,25 @@ class Assessment {
     String? title,
     DateTime? date,
     double? maxScore,
-  }) =>
-      Assessment(
-        id: id,
-        tenantId: tenantId,
-        gradeId: gradeId ?? this.gradeId,
-        type: type ?? this.type,
-        title: title ?? this.title,
-        date: date ?? this.date,
-        maxScore: maxScore ?? this.maxScore,
-      );
+  }) => Assessment(
+    id: id,
+    tenantId: tenantId,
+    gradeId: gradeId ?? this.gradeId,
+    type: type ?? this.type,
+    title: title ?? this.title,
+    date: date ?? this.date,
+    maxScore: maxScore ?? this.maxScore,
+  );
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'tenantId': tenantId,
-        'gradeId': gradeId,
-        'type': type.name,
-        'title': title,
-        'date': date.toIso8601String(),
-        'maxScore': maxScore,
-      };
+    'id': id,
+    'tenantId': tenantId,
+    'gradeId': gradeId,
+    'type': type.name,
+    'title': title,
+    'date': date.toIso8601String(),
+    'maxScore': maxScore,
+  };
 
   @override
   bool operator ==(Object other) =>
@@ -84,13 +83,13 @@ class AssessmentResult {
   });
 
   factory AssessmentResult.fromJson(Map<String, dynamic> json) => AssessmentResult(
-        id: json['id'] as String,
-        tenantId: json['tenantId'] as String,
-        assessmentId: json['assessmentId'] as String,
-        studentId: json['studentId'] as String,
-        delivered: json['delivered'] as bool,
-        score: (json['score'] as num?)?.toDouble(),
-      );
+    id: json['id'] as String,
+    tenantId: json['tenantId'] as String,
+    assessmentId: json['assessmentId'] as String,
+    studentId: json['studentId'] as String,
+    delivered: json['delivered'] as bool,
+    score: (json['score'] as num?)?.toDouble(),
+  );
 
   final String id;
   final String tenantId;
@@ -100,22 +99,22 @@ class AssessmentResult {
   final double? score;
 
   AssessmentResult copyWith({bool? delivered, double? score}) => AssessmentResult(
-        id: id,
-        tenantId: tenantId,
-        assessmentId: assessmentId,
-        studentId: studentId,
-        delivered: delivered ?? this.delivered,
-        score: score ?? this.score,
-      );
+    id: id,
+    tenantId: tenantId,
+    assessmentId: assessmentId,
+    studentId: studentId,
+    delivered: delivered ?? this.delivered,
+    score: score ?? this.score,
+  );
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'tenantId': tenantId,
-        'assessmentId': assessmentId,
-        'studentId': studentId,
-        'delivered': delivered,
-        'score': score,
-      };
+    'id': id,
+    'tenantId': tenantId,
+    'assessmentId': assessmentId,
+    'studentId': studentId,
+    'delivered': delivered,
+    'score': score,
+  };
 
   @override
   bool operator ==(Object other) =>
