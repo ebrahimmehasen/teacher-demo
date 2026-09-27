@@ -12,13 +12,13 @@ class User {
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
-        id: json['id'] as String,
-        name: json['name'] as String,
-        phone: json['phone'] as String,
-        password: json['password'] as String,
-        role: UserRole.values.byName(json['role'] as String),
-        photoUrl: json['photoUrl'] as String?,
-      );
+    id: json['id'] as String,
+    name: json['name'] as String,
+    phone: json['phone'] as String,
+    password: json['password'] as String,
+    role: UserRole.values.byName(json['role'] as String),
+    photoUrl: json['photoUrl'] as String?,
+  );
 
   final String id;
   final String name;
@@ -30,22 +30,22 @@ class User {
   final String? photoUrl;
 
   User copyWith({String? name, String? phone, String? password, String? photoUrl}) => User(
-        id: id,
-        name: name ?? this.name,
-        phone: phone ?? this.phone,
-        password: password ?? this.password,
-        role: role,
-        photoUrl: photoUrl ?? this.photoUrl,
-      );
+    id: id,
+    name: name ?? this.name,
+    phone: phone ?? this.phone,
+    password: password ?? this.password,
+    role: role,
+    photoUrl: photoUrl ?? this.photoUrl,
+  );
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'name': name,
-        'phone': phone,
-        'password': password,
-        'role': role.name,
-        'photoUrl': photoUrl,
-      };
+    'id': id,
+    'name': name,
+    'phone': phone,
+    'password': password,
+    'role': role.name,
+    'photoUrl': photoUrl,
+  };
 
   @override
   bool operator ==(Object other) =>
