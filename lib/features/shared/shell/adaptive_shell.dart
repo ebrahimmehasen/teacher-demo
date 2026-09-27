@@ -26,7 +26,8 @@ class AdaptiveShell extends StatelessWidget {
 
   int get _selectedIndex {
     final index = destinations.indexWhere(
-        (d) => location == d.path || location.startsWith('${d.path}/'));
+      (d) => location == d.path || location.startsWith('${d.path}/'),
+    );
     return index < 0 ? 0 : index;
   }
 
@@ -36,10 +37,7 @@ class AdaptiveShell extends StatelessWidget {
     final selected = _selectedIndex;
     final title = destinations.isEmpty ? '' : destinations[selected].label;
 
-    final appBar = AppBar(
-      title: Text(title),
-      actions: const [NotificationBell(), AccountMenu()],
-    );
+    final appBar = AppBar(title: Text(title), actions: const [NotificationBell(), AccountMenu()]);
 
     if (!wide) {
       return Scaffold(
@@ -76,7 +74,9 @@ class AdaptiveShell extends StatelessWidget {
             onSelected: (i) => context.go(destinations[i].path),
           ),
           const VerticalDivider(width: 1),
-          Expanded(child: Scaffold(appBar: appBar, body: child)),
+          Expanded(
+            child: Scaffold(appBar: appBar, body: child),
+          ),
         ],
       ),
     );
