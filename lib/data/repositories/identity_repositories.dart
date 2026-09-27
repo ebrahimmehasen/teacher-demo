@@ -42,5 +42,6 @@ abstract interface class StudentRepository {
   Stream<List<ParentLink>> watchLinksForStudents(Set<String> studentUserIds);
   Future<List<ParentLink>> getLinksForParent(String parentUserId);
   Future<List<ParentLink>> getLinksForStudent(String studentUserId);
+  Future<List<ParentLink>> getLinksForStudents(Set<String> studentUserIds);
   Future<void> linkParent(ParentLink link);
 }
