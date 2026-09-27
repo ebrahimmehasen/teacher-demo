@@ -4,12 +4,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'core/router/app_router.dart';
 import 'core/theme/app_theme.dart';
+import 'services/tenant_data.dart';
 
 class TeacherDemoApp extends ConsumerWidget {
   const TeacherDemoApp({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.listen(overdueRemindersProvider, (_, _) {});
     return MaterialApp.router(
       title: 'منصة المدرس',
       debugShowCheckedModeBanner: false,
