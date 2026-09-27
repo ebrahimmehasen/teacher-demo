@@ -7,11 +7,10 @@ class MockRequestRepository implements RequestRepository {
   final MockDatabase _db;
 
   @override
-  Stream<List<Request>> watchByTenant(String tenantId, {String? studentId}) =>
-      _db.requests.watch(
-        (r) => r.tenantId == tenantId && (studentId == null || r.studentId == studentId),
-        sort: (a, b) => b.createdAt.compareTo(a.createdAt),
-      );
+  Stream<List<Request>> watchByTenant(String tenantId, {String? studentId}) => _db.requests.watch(
+    (r) => r.tenantId == tenantId && (studentId == null || r.studentId == studentId),
+    sort: (a, b) => b.createdAt.compareTo(a.createdAt),
+  );
 
   @override
   Future<Request> add(Request request) async {
@@ -52,9 +51,9 @@ class MockAnnouncementRepository implements AnnouncementRepository {
 
   @override
   Stream<List<Announcement>> watchByTenant(String tenantId) => _db.announcements.watch(
-        (a) => a.tenantId == tenantId,
-        sort: (a, b) => b.createdAt.compareTo(a.createdAt),
-      );
+    (a) => a.tenantId == tenantId,
+    sort: (a, b) => b.createdAt.compareTo(a.createdAt),
+  );
 
   @override
   Future<Announcement> add(Announcement announcement) async {
@@ -76,14 +75,16 @@ class MockNotificationRepository implements NotificationRepository {
 
   @override
   Stream<List<AppNotification>> watchForUser(String userId) => _db.notifications.watch(
-        (n) => n.userId == userId,
-        sort: (a, b) => b.createdAt.compareTo(a.createdAt),
-      );
+    (n) => n.userId == userId,
+    sort: (a, b) => b.createdAt.compareTo(a.createdAt),
+  );
 
   @override
   Future<void> addAll(List<AppNotification> notifications) async {
     await _db.delay();
-    _db.notifications.insertAll(notifications);
+    final existing = {for (final n in _db.notifications.rows) n.id};
+    final fresh = notifications.where((n) => existing.add(n.id)).toList();
+    if (fresh.isNotEmpty) _db.notifications.insertAll(fresh);
   }
 
   @override
