@@ -17,19 +17,19 @@ class Attendance {
   });
 
   factory Attendance.fromJson(Map<String, dynamic> json) => Attendance(
-        id: json['id'] as String,
-        tenantId: json['tenantId'] as String,
-        studentId: json['studentId'] as String,
-        groupId: json['groupId'] as String,
-        date: DateTime.parse(json['date'] as String),
-        status: AttendanceStatus.values.byName(json['status'] as String),
-        lateMinutes: json['lateMinutes'] as int,
-        scanTime: json['scanTime'] == null ? null : DateTime.parse(json['scanTime'] as String),
-        method: AttendanceMethod.values.byName(json['method'] as String),
-        isMakeup: json['isMakeup'] as bool,
-        excuseText: json['excuseText'] as String?,
-        recordedBy: json['recordedBy'] as String,
-      );
+    id: json['id'] as String,
+    tenantId: json['tenantId'] as String,
+    studentId: json['studentId'] as String,
+    groupId: json['groupId'] as String,
+    date: DateTime.parse(json['date'] as String),
+    status: AttendanceStatus.values.byName(json['status'] as String),
+    lateMinutes: json['lateMinutes'] as int,
+    scanTime: json['scanTime'] == null ? null : DateTime.parse(json['scanTime'] as String),
+    method: AttendanceMethod.values.byName(json['method'] as String),
+    isMakeup: json['isMakeup'] as bool,
+    excuseText: json['excuseText'] as String?,
+    recordedBy: json['recordedBy'] as String,
+  );
 
   final String id;
   final String tenantId;
@@ -56,36 +56,35 @@ class Attendance {
     bool? isMakeup,
     String? excuseText,
     String? recordedBy,
-  }) =>
-      Attendance(
-        id: id,
-        tenantId: tenantId,
-        studentId: studentId,
-        groupId: groupId,
-        date: date,
-        status: status ?? this.status,
-        lateMinutes: lateMinutes ?? this.lateMinutes,
-        scanTime: scanTime ?? this.scanTime,
-        method: method ?? this.method,
-        isMakeup: isMakeup ?? this.isMakeup,
-        excuseText: excuseText ?? this.excuseText,
-        recordedBy: recordedBy ?? this.recordedBy,
-      );
+  }) => Attendance(
+    id: id,
+    tenantId: tenantId,
+    studentId: studentId,
+    groupId: groupId,
+    date: date,
+    status: status ?? this.status,
+    lateMinutes: lateMinutes ?? this.lateMinutes,
+    scanTime: scanTime ?? this.scanTime,
+    method: method ?? this.method,
+    isMakeup: isMakeup ?? this.isMakeup,
+    excuseText: excuseText ?? this.excuseText,
+    recordedBy: recordedBy ?? this.recordedBy,
+  );
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'tenantId': tenantId,
-        'studentId': studentId,
-        'groupId': groupId,
-        'date': date.toIso8601String(),
-        'status': status.name,
-        'lateMinutes': lateMinutes,
-        'scanTime': scanTime?.toIso8601String(),
-        'method': method.name,
-        'isMakeup': isMakeup,
-        'excuseText': excuseText,
-        'recordedBy': recordedBy,
-      };
+    'id': id,
+    'tenantId': tenantId,
+    'studentId': studentId,
+    'groupId': groupId,
+    'date': date.toIso8601String(),
+    'status': status.name,
+    'lateMinutes': lateMinutes,
+    'scanTime': scanTime?.toIso8601String(),
+    'method': method.name,
+    'isMakeup': isMakeup,
+    'excuseText': excuseText,
+    'recordedBy': recordedBy,
+  };
 
   @override
   bool operator ==(Object other) =>
@@ -104,6 +103,18 @@ class Attendance {
       other.recordedBy == recordedBy;
 
   @override
-  int get hashCode => Object.hash(id, tenantId, studentId, groupId, date, status, lateMinutes,
-      scanTime, method, isMakeup, excuseText, recordedBy);
+  int get hashCode => Object.hash(
+    id,
+    tenantId,
+    studentId,
+    groupId,
+    date,
+    status,
+    lateMinutes,
+    scanTime,
+    method,
+    isMakeup,
+    excuseText,
+    recordedBy,
+  );
 }
