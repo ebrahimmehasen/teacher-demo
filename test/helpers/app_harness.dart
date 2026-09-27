@@ -23,6 +23,14 @@ Future<void> loadAppFonts() async {
     loader.addFont(Future.value(ByteData.view(bytes.buffer)));
   }
   await loader.load();
+
+  final flutterRoot = Platform.environment['FLUTTER_ROOT'];
+  final icons = File('$flutterRoot/bin/cache/artifacts/material_fonts/MaterialIcons-Regular.otf');
+  if (flutterRoot != null && icons.existsSync()) {
+    final iconLoader = FontLoader('MaterialIcons')
+      ..addFont(Future.value(ByteData.view(icons.readAsBytesSync().buffer)));
+    await iconLoader.load();
+  }
 }
 
 /// Advances enough frames for zero-latency mock streams to emit and settle.
