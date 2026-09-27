@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../data/models/models.dart';
+import '../../../data/repository_providers.dart';
 import '../../../services/dashboard_service.dart';
 import '../../../services/payment_status_service.dart';
 import '../../../services/tenant_data.dart';
@@ -35,6 +36,19 @@ class StudentFilter {
     return true;
   }
 }
+
+final tenantProfilesProvider = StreamProvider<Map<String, StudentProfile>>((ref) async* {
+  final students = await ref.watch(tenantStudentsProvider.future);
+  yield* ref
+      .watch(studentRepositoryProvider)
+      .watchProfiles(students.keys.toSet())
+      .map((profiles) => {for (final p in profiles) p.userId: p});
+});
+
+final tenantParentLinksProvider = StreamProvider<List<ParentLink>>((ref) async* {
+  final students = await ref.watch(tenantStudentsProvider.future);
+  yield* ref.watch(studentRepositoryProvider).watchLinksForStudents(students.keys.toSet());
+});
 
 final studentRowsProvider = FutureProvider<List<StudentRow>>((ref) async {
   final billing = await ref.watch(currentBillingProvider.future);
