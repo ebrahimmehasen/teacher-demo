@@ -11,14 +11,14 @@ class Grade {
   }) : assert(dueDay >= 1 && dueDay <= 28);
 
   factory Grade.fromJson(Map<String, dynamic> json) => Grade(
-        id: json['id'] as String,
-        tenantId: json['tenantId'] as String,
-        name: json['name'] as String,
-        publicPrice: (json['publicPrice'] as num).toDouble(),
-        dueDay: json['dueDay'] as int,
-        graceDays: json['graceDays'] as int,
-        defaultCapacity: json['defaultCapacity'] as int,
-      );
+    id: json['id'] as String,
+    tenantId: json['tenantId'] as String,
+    name: json['name'] as String,
+    publicPrice: (json['publicPrice'] as num).toDouble(),
+    dueDay: json['dueDay'] as int,
+    graceDays: json['graceDays'] as int,
+    defaultCapacity: json['defaultCapacity'] as int,
+  );
 
   final String id;
   final String tenantId;
@@ -34,26 +34,25 @@ class Grade {
     int? dueDay,
     int? graceDays,
     int? defaultCapacity,
-  }) =>
-      Grade(
-        id: id,
-        tenantId: tenantId,
-        name: name ?? this.name,
-        publicPrice: publicPrice ?? this.publicPrice,
-        dueDay: dueDay ?? this.dueDay,
-        graceDays: graceDays ?? this.graceDays,
-        defaultCapacity: defaultCapacity ?? this.defaultCapacity,
-      );
+  }) => Grade(
+    id: id,
+    tenantId: tenantId,
+    name: name ?? this.name,
+    publicPrice: publicPrice ?? this.publicPrice,
+    dueDay: dueDay ?? this.dueDay,
+    graceDays: graceDays ?? this.graceDays,
+    defaultCapacity: defaultCapacity ?? this.defaultCapacity,
+  );
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'tenantId': tenantId,
-        'name': name,
-        'publicPrice': publicPrice,
-        'dueDay': dueDay,
-        'graceDays': graceDays,
-        'defaultCapacity': defaultCapacity,
-      };
+    'id': id,
+    'tenantId': tenantId,
+    'name': name,
+    'publicPrice': publicPrice,
+    'dueDay': dueDay,
+    'graceDays': graceDays,
+    'defaultCapacity': defaultCapacity,
+  };
 
   @override
   bool operator ==(Object other) =>
