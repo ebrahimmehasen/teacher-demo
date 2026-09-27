@@ -23,18 +23,13 @@ class BottomNavShell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final index = destinations.indexWhere(
-        (d) => location == d.path || location.startsWith('${d.path}/'));
+      (d) => location == d.path || location.startsWith('${d.path}/'),
+    );
 
     return Scaffold(
-      appBar: AppBar(
-        title: title,
-        actions: const [NotificationBell(), AccountMenu()],
-      ),
+      appBar: AppBar(title: title, actions: const [NotificationBell(), AccountMenu()]),
       body: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 720),
-          child: child,
-        ),
+        child: ConstrainedBox(constraints: const BoxConstraints(maxWidth: 720), child: child),
       ),
       bottomNavigationBar: NavigationBar(
         selectedIndex: index < 0 ? 0 : index,
