@@ -38,7 +38,10 @@ void main() {
     expect(groups, hasLength(8));
     expect(groups.where((g) => g.isPrivate), hasLength(2));
     expect(enrollmentsOf(main), hasLength(SeedGenerator.mainStudentCount));
-    expect(seed.users.where((u) => u.role == UserRole.parent), hasLength(SeedGenerator.parentCount));
+    expect(
+      seed.users.where((u) => u.role == UserRole.parent),
+      hasLength(SeedGenerator.parentCount),
+    );
 
     final staff = seed.staff.where((s) => s.tenantId == main).toList();
     expect(staff, hasLength(2));
@@ -236,8 +239,9 @@ void main() {
     expect(seed.announcements.where((a) => a.tenantId == main), hasLength(4));
     expect(seed.lessons, hasLength(3));
 
-    final expenseMonths =
-        seed.expenses.where((e) => e.tenantId == main).map((e) => AppDates.monthKey(e.date));
+    final expenseMonths = seed.expenses
+        .where((e) => e.tenantId == main)
+        .map((e) => AppDates.monthKey(e.date));
     expect(expenseMonths.toSet(), hasLength(6));
     expect(seed.expenses.every((e) => !e.date.isAfter(now)), isTrue);
   });
@@ -245,8 +249,9 @@ void main() {
   test('change-group requests target a group of the same grade', () {
     final groups = {for (final g in seed.groups) g.id: g};
     for (final r in seed.requests.where((r) => r.type == RequestType.changeGroup)) {
-      final current = seed.enrollments
-          .singleWhere((e) => e.studentId == r.studentId && e.tenantId == r.tenantId);
+      final current = seed.enrollments.singleWhere(
+        (e) => e.studentId == r.studentId && e.tenantId == r.tenantId,
+      );
       expect(groups[r.requestedGroupId]!.gradeId, groups[current.groupId]!.gradeId);
     }
   });
