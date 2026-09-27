@@ -36,9 +36,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       _error = null;
     });
     try {
-      await ref
-          .read(sessionProvider.notifier)
-          .signIn(phone: _phone.text, password: _password.text);
+      await ref.read(sessionProvider.notifier).signIn(phone: _phone.text, password: _password.text);
     } on AuthFailure catch (e) {
       if (mounted) setState(() => _error = e.message);
     } finally {
@@ -128,9 +126,11 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                 suffixIcon: IconButton(
                                   tooltip: _obscure ? 'إظهار' : 'إخفاء',
                                   onPressed: () => setState(() => _obscure = !_obscure),
-                                  icon: Icon(_obscure
-                                      ? Icons.visibility_outlined
-                                      : Icons.visibility_off_outlined),
+                                  icon: Icon(
+                                    _obscure
+                                        ? Icons.visibility_outlined
+                                        : Icons.visibility_off_outlined,
+                                  ),
                                 ),
                               ),
                               validator: Validators.password,
@@ -190,10 +190,10 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   }
 
   static IconData _roleIcon(UserRole role) => switch (role) {
-        UserRole.teacher => Icons.person_outline,
-        UserRole.assistant => Icons.badge_outlined,
-        UserRole.student => Icons.backpack_outlined,
-        UserRole.parent => Icons.family_restroom,
-        UserRole.platformAdmin => Icons.admin_panel_settings_outlined,
-      };
+    UserRole.teacher => Icons.person_outline,
+    UserRole.assistant => Icons.badge_outlined,
+    UserRole.student => Icons.backpack_outlined,
+    UserRole.parent => Icons.family_restroom,
+    UserRole.platformAdmin => Icons.admin_panel_settings_outlined,
+  };
 }
