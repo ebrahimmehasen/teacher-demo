@@ -42,7 +42,9 @@ abstract final class AppTheme {
         elevation: 0,
         margin: EdgeInsets.zero,
         color: isLight ? Colors.white : scheme.surfaceContainer,
-        shape: shape.copyWith(side: BorderSide(color: scheme.outlineVariant.withValues(alpha: 0.6))),
+        shape: shape.copyWith(
+          side: BorderSide(color: scheme.outlineVariant.withValues(alpha: 0.6)),
+        ),
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
@@ -91,5 +93,4 @@ class ThemeModeController extends Notifier<ThemeMode> {
   void toggle() => state = state == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark;
 }
 
-final themeModeProvider =
-    NotifierProvider<ThemeModeController, ThemeMode>(ThemeModeController.new);
+final themeModeProvider = NotifierProvider<ThemeModeController, ThemeMode>(ThemeModeController.new);
