@@ -12,14 +12,14 @@ class StaffMember {
   });
 
   factory StaffMember.fromJson(Map<String, dynamic> json) => StaffMember(
-        id: json['id'] as String,
-        tenantId: json['tenantId'] as String,
-        userId: json['userId'] as String,
-        type: StaffType.values.byName(json['type'] as String),
-        permissions: {
-          for (final p in json['permissions'] as List) Permission.values.byName(p as String),
-        },
-      );
+    id: json['id'] as String,
+    tenantId: json['tenantId'] as String,
+    userId: json['userId'] as String,
+    type: StaffType.values.byName(json['type'] as String),
+    permissions: {
+      for (final p in json['permissions'] as List) Permission.values.byName(p as String),
+    },
+  );
 
   final String id;
   final String tenantId;
@@ -30,20 +30,20 @@ class StaffMember {
   bool can(Permission permission) => permissions.contains(permission);
 
   StaffMember copyWith({StaffType? type, Set<Permission>? permissions}) => StaffMember(
-        id: id,
-        tenantId: tenantId,
-        userId: userId,
-        type: type ?? this.type,
-        permissions: permissions ?? this.permissions,
-      );
+    id: id,
+    tenantId: tenantId,
+    userId: userId,
+    type: type ?? this.type,
+    permissions: permissions ?? this.permissions,
+  );
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'tenantId': tenantId,
-        'userId': userId,
-        'type': type.name,
-        'permissions': [for (final p in permissions) p.name],
-      };
+    'id': id,
+    'tenantId': tenantId,
+    'userId': userId,
+    'type': type.name,
+    'permissions': [for (final p in permissions) p.name],
+  };
 
   @override
   bool operator ==(Object other) =>
@@ -55,6 +55,5 @@ class StaffMember {
       setEquals(other.permissions, permissions);
 
   @override
-  int get hashCode =>
-      Object.hash(id, tenantId, userId, type, Object.hashAllUnordered(permissions));
+  int get hashCode => Object.hash(id, tenantId, userId, type, Object.hashAllUnordered(permissions));
 }
