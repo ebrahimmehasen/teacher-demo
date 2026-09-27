@@ -5,6 +5,7 @@ import '../../../core/constants/labels.dart';
 import '../../../core/utils/money.dart';
 import '../../../core/widgets/async_value_view.dart';
 import '../../../core/widgets/empty_state.dart';
+import '../../../core/widgets/filter_dropdown.dart';
 import '../../../core/widgets/search_filter_bar.dart';
 import '../../../core/widgets/snackbars.dart';
 import '../../../core/widgets/status_chip.dart';
@@ -14,7 +15,7 @@ import '../../../services/group_service.dart';
 import '../../../services/payment_status_service.dart';
 import '../../../services/tenant_data.dart';
 import 'bulk_action_dialogs.dart';
-import 'students_providers.dart';
+import '../../shared/students/student_rows.dart';
 
 class StudentsPage extends ConsumerStatefulWidget {
   const StudentsPage({super.key});
@@ -115,7 +116,7 @@ class _StudentsPageState extends ConsumerState<StudentsPage> {
                       ),
                     ),
                     filters: [
-                      _Dropdown<String>(
+                      FilterDropdown<String>(
                         label: 'الصف',
                         value: _filter.gradeId,
                         items: {for (final g in grades) g.id: g.name},
@@ -127,7 +128,7 @@ class _StudentsPageState extends ConsumerState<StudentsPage> {
                           ),
                         ),
                       ),
-                      _Dropdown<String>(
+                      FilterDropdown<String>(
                         label: 'المجموعة',
                         value: _filter.groupId,
                         items: {
@@ -145,7 +146,7 @@ class _StudentsPageState extends ConsumerState<StudentsPage> {
                           ),
                         ),
                       ),
-                      _Dropdown<PaymentStatus>(
+                      FilterDropdown<PaymentStatus>(
                         label: 'حالة الدفع',
                         value: _filter.status,
                         items: {for (final s in PaymentStatus.values) s: s.label},
@@ -190,42 +191,6 @@ class _StudentsPageState extends ConsumerState<StudentsPage> {
           },
         );
       },
-    );
-  }
-}
-
-class _Dropdown<T> extends StatelessWidget {
-  const _Dropdown({
-    required this.label,
-    required this.value,
-    required this.items,
-    required this.onChanged,
-  });
-
-  final String label;
-  final T? value;
-  final Map<T, String> items;
-  final ValueChanged<T?> onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 180,
-      child: DropdownButtonFormField<T?>(
-        key: ValueKey('$label-$value-${items.length}'),
-        initialValue: items.containsKey(value) ? value : null,
-        isExpanded: true,
-        decoration: InputDecoration(labelText: label, isDense: true),
-        items: [
-          DropdownMenuItem<T?>(value: null, child: const Text('الكل')),
-          for (final e in items.entries)
-            DropdownMenuItem<T?>(
-              value: e.key,
-              child: Text(e.value, overflow: TextOverflow.ellipsis),
-            ),
-        ],
-        onChanged: onChanged,
-      ),
     );
   }
 }
