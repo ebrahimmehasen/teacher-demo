@@ -25,12 +25,14 @@ Future<void> _pump(WidgetTester tester, Size size, Widget shell) async {
   tester.view.devicePixelRatio = 1;
   addTearDown(tester.view.reset);
 
-  await tester.pumpWidget(ProviderScope(
-    child: MaterialApp(
-      theme: AppTheme.light(),
-      home: Directionality(textDirection: TextDirection.rtl, child: shell),
+  await tester.pumpWidget(
+    ProviderScope(
+      child: MaterialApp(
+        theme: AppTheme.light(),
+        home: Directionality(textDirection: TextDirection.rtl, child: shell),
+      ),
     ),
-  ));
+  );
   await tester.pumpAndSettle();
 }
 
