@@ -15,10 +15,7 @@ class ShellHeader extends StatelessWidget {
         Container(
           width: 44,
           height: 44,
-          decoration: BoxDecoration(
-            color: scheme.primary,
-            borderRadius: BorderRadius.circular(12),
-          ),
+          decoration: BoxDecoration(color: scheme.primary, borderRadius: BorderRadius.circular(12)),
           child: Icon(Icons.school_rounded, color: scheme.onPrimary),
         ),
         const SizedBox(width: 12),
