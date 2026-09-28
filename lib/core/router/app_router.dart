@@ -10,11 +10,21 @@ import '../../features/assistant/payments/payments_page.dart';
 import '../../features/assistant/scanner/scanner_page.dart';
 import '../../features/assistant/sheets/sheet_sales_page.dart';
 import '../../features/assistant/students/assistant_students_page.dart';
-import '../../features/shared/attendance/attendance_log_page.dart';
 import '../../features/auth/login_page.dart';
 import '../../features/parent/parent_shell.dart';
 import '../../features/platform_admin/admin_shell.dart';
+import '../../features/shared/announcements/announcements_list_page.dart';
+import '../../features/shared/assessments/my_results_page.dart';
+import '../../features/shared/attendance/attendance_log_page.dart';
+import '../../features/shared/attendance/my_attendance_page.dart';
 import '../../features/shared/coming_soon_page.dart';
+import '../../features/shared/lessons/recorded_lessons_page.dart';
+import '../../features/shared/schedule/my_schedule_page.dart';
+import '../../features/student/home/student_home_page.dart';
+import '../../features/student/more/student_more_page.dart';
+import '../../features/student/more/student_profile_page.dart';
+import '../../features/student/qr/student_qr_page.dart';
+import '../../features/student/requests/student_requests_page.dart';
 import '../../features/student/student_shell.dart';
 import '../../features/teacher/dashboard/dashboard_page.dart';
 import '../../features/teacher/schedule/schedule_page.dart';
@@ -87,6 +97,21 @@ final Map<String, Widget Function()> _pages = {
   '/assistant/payments': () => const PaymentsPage(),
   '/assistant/sheets': () => const SheetSalesPage(),
   '/assistant/grades': () => const GradesEntryPage(),
+  '/student/home': () => const StudentHomePage(),
+  '/student/qr': () => const StudentQrPage(),
+  '/student/schedule': () => const MySchedulePage(),
+  '/student/requests': () => const StudentRequestsPage(),
+  '/student/more': () => const StudentMorePage(),
+};
+
+/// Sub-pages reached through "المزيد" (not their own bottom-nav tab), shared
+/// with the parent role in a later phase.
+final Map<String, Widget Function()> _moreSubPages = {
+  'profile': () => const StudentProfilePage(),
+  'attendance': () => const MyAttendancePage(),
+  'grades': () => const MyResultsPage(),
+  'lessons': () => const RecordedLessonsPage(),
+  'announcements': () => const AnnouncementsListPage(),
 };
 
 ShellRoute _roleShell(List<RoleDestination> destinations, _ShellBuilder shell) => ShellRoute(
@@ -97,6 +122,14 @@ ShellRoute _roleShell(List<RoleDestination> destinations, _ShellBuilder shell) =
         path: d.path,
         pageBuilder: (_, _) =>
             NoTransitionPage(child: _pages[d.path]?.call() ?? ComingSoonPage(destination: d)),
+        routes: [
+          if (d.path.endsWith('/more'))
+            for (final entry in _moreSubPages.entries)
+              GoRoute(
+                path: entry.key,
+                pageBuilder: (_, _) => NoTransitionPage(child: entry.value()),
+              ),
+        ],
       ),
   ],
 );
