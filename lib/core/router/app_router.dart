@@ -17,6 +17,7 @@ import '../../features/parent/home/parent_home_page.dart';
 import '../../features/parent/more/parent_more_page.dart';
 import '../../features/parent/parent_shell.dart';
 import '../../features/platform_admin/admin_shell.dart';
+import '../../features/platform_admin/tenants_page.dart';
 import '../../features/shared/announcements/announcements_list_page.dart';
 import '../../features/shared/assessments/my_results_page.dart';
 import '../../features/shared/attendance/attendance_log_page.dart';
@@ -130,6 +131,7 @@ final Map<String, Widget Function()> _pages = {
   '/parent/grades': () => const MyResultsPage(),
   '/parent/requests': () => const MyRequestsPage(),
   '/parent/more': () => const ParentMorePage(),
+  '/admin/tenants': () => const TenantsPage(),
 };
 
 /// Sub-pages of the student's "المزيد" tab.
