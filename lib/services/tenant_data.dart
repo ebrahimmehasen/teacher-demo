@@ -14,6 +14,10 @@ final clockProvider = Provider<DateTime Function()>((ref) => DateTime.now);
 Stream<List<T>> _scoped<T>(String? tenantId, Stream<List<T>> Function(String tenantId) watch) =>
     tenantId == null ? Stream.value(<T>[]) : watch(tenantId);
 
+final allTenantsProvider = StreamProvider<List<Tenant>>(
+  (ref) => ref.watch(tenantRepositoryProvider).watchAll(),
+);
+
 final gradesProvider = StreamProvider<List<Grade>>((ref) {
   final tenantId = ref.watch(sessionProvider.select((s) => s?.tenantId));
   return _scoped(tenantId, ref.watch(gradeRepositoryProvider).watchByTenant);
@@ -53,6 +57,16 @@ final sheetSalesProvider = StreamProvider<List<SheetSale>>((ref) {
 final sheetsProvider = StreamProvider<List<Sheet>>((ref) {
   final tenantId = ref.watch(sessionProvider.select((s) => s?.tenantId));
   return _scoped(tenantId, ref.watch(sheetRepositoryProvider).watchSheets);
+});
+
+final lessonsProvider = StreamProvider<List<RecordedLesson>>((ref) {
+  final tenantId = ref.watch(sessionProvider.select((s) => s?.tenantId));
+  return _scoped(tenantId, ref.watch(lessonRepositoryProvider).watchByTenant);
+});
+
+final announcementsProvider = StreamProvider<List<Announcement>>((ref) {
+  final tenantId = ref.watch(sessionProvider.select((s) => s?.tenantId));
+  return _scoped(tenantId, ref.watch(announcementRepositoryProvider).watchByTenant);
 });
 
 final assessmentsProvider = StreamProvider<List<Assessment>>((ref) {
