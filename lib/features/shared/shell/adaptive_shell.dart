@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/router/role_destinations.dart';
-import '../../../core/widgets/notification_bell.dart';
+import '../notifications/notification_bell_button.dart';
 import 'account_menu.dart';
 
 /// Staff shell: side NavigationRail on tablet/web, Drawer on phones.
@@ -37,7 +37,10 @@ class AdaptiveShell extends StatelessWidget {
     final selected = _selectedIndex;
     final title = destinations.isEmpty ? '' : destinations[selected].label;
 
-    final appBar = AppBar(title: Text(title), actions: const [NotificationBell(), AccountMenu()]);
+    final appBar = AppBar(
+      title: Text(title),
+      actions: const [NotificationBellButton(), AccountMenu()],
+    );
 
     if (!wide) {
       return Scaffold(
