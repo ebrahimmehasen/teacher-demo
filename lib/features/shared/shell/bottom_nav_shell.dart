@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/router/role_destinations.dart';
-import '../../../core/widgets/notification_bell.dart';
+import '../notifications/notification_bell_button.dart';
 import 'account_menu.dart';
 
 /// Student / parent shell with a bottom NavigationBar.
@@ -32,7 +32,7 @@ class BottomNavShell extends StatelessWidget {
     );
 
     return Scaffold(
-      appBar: AppBar(title: title, actions: const [NotificationBell(), AccountMenu()]),
+      appBar: AppBar(title: title, actions: const [NotificationBellButton(), AccountMenu()]),
       body: Column(
         children: [
           ?banner,
