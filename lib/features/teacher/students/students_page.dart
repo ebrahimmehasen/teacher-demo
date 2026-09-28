@@ -15,6 +15,7 @@ import '../../../services/group_service.dart';
 import '../../../services/payment_status_service.dart';
 import '../../../services/tenant_data.dart';
 import 'bulk_action_dialogs.dart';
+import 'student_detail_sheet.dart';
 import '../../shared/students/student_rows.dart';
 
 class StudentsPage extends ConsumerStatefulWidget {
@@ -312,6 +313,7 @@ class _StudentsTable extends StatelessWidget {
             DataColumn(label: Text('الاشتراك الشهري')),
             DataColumn(label: Text('المدفوع هذا الشهر')),
             DataColumn(label: Text('الحالة')),
+            DataColumn(label: Text('')),
           ],
           rows: [
             for (final r in rows)
@@ -345,6 +347,21 @@ class _StudentsTable extends StatelessWidget {
                   DataCell(Text(_priceLabel(r))),
                   DataCell(Text(Money.format(r.billing.paid))),
                   DataCell(StatusChip.payment(r.billing.status)),
+                  DataCell(
+                    IconButton(
+                      tooltip: 'عرض التفاصيل',
+                      icon: const Icon(Icons.info_outline),
+                      onPressed: () => showStudentDetailSheet(
+                        context,
+                        StudentRowLike(
+                          studentId: r.student.id,
+                          name: r.student.name,
+                          phone: r.student.phone,
+                          groupLabel: _groupLabel(r),
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
           ],
@@ -393,6 +410,19 @@ class _StudentsList extends StatelessWidget {
                     ),
                   ),
                   StatusChip.payment(r.billing.status),
+                  IconButton(
+                    tooltip: 'عرض التفاصيل',
+                    icon: const Icon(Icons.info_outline),
+                    onPressed: () => showStudentDetailSheet(
+                      context,
+                      StudentRowLike(
+                        studentId: r.student.id,
+                        name: r.student.name,
+                        phone: r.student.phone,
+                        groupLabel: _groupLabel(r),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
