@@ -64,6 +64,14 @@ extension SubscriptionStatusLabel on SubscriptionStatus {
   };
 }
 
+extension SubscriptionPlanLabel on SubscriptionPlan {
+  String get label => switch (this) {
+    SubscriptionPlan.basic => 'أساسية',
+    SubscriptionPlan.pro => 'احترافية',
+    SubscriptionPlan.premium => 'مميزة',
+  };
+}
+
 extension RequestTypeLabelExt on RequestType {
   String get label => switch (this) {
     RequestType.absence => 'غياب',
