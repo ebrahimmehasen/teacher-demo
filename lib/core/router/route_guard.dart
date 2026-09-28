@@ -4,6 +4,10 @@ import 'role_destinations.dart';
 
 const loginPath = '/login';
 
+/// Self-service parent sign-up: reachable signed-out (account step) and
+/// signed-in as the freshly created parent (link-child step).
+const parentSignUpPath = '/signup/parent';
+
 /// Returns where to send the user, or null to allow [path].
 /// [staff] is null while an assistant's permissions are still loading.
 String? resolveRedirect({
@@ -11,6 +15,7 @@ String? resolveRedirect({
   required StaffMember? staff,
   required String path,
 }) {
+  if (path == parentSignUpPath) return null;
   if (session == null) return path == loginPath ? null : loginPath;
 
   final role = session.role;
