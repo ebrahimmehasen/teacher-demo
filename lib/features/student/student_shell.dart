@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/router/role_destinations.dart';
 import '../../services/session_service.dart';
 import '../shared/shell/bottom_nav_shell.dart';
+import '../shared/shell/enrollment_switcher.dart';
 import '../shared/shell/shell_header.dart';
 
 class StudentShell extends ConsumerWidget {
@@ -23,6 +24,7 @@ class StudentShell extends ConsumerWidget {
         title: session?.user.name ?? '',
         subtitle: tenant == null ? null : '${tenant.teacherName} – ${tenant.subject}',
       ),
+      bottom: const EnrollmentSwitcher(),
       child: child,
     );
   }
