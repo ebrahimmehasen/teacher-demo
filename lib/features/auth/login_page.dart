@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../core/constants/demo_accounts.dart';
+import '../../core/router/route_guard.dart';
 import '../../core/utils/validators.dart';
 import '../../data/models/enums.dart';
 import '../../services/session_service.dart';
@@ -179,6 +181,11 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           onPressed: _loading ? null : () => _fill(account),
                         ),
                     ],
+                  ),
+                  const SizedBox(height: 20),
+                  TextButton(
+                    onPressed: _loading ? null : () => context.push(parentSignUpPath),
+                    child: const Text('ولي أمر جديد؟ سجّل حساب'),
                   ),
                 ],
               ),
