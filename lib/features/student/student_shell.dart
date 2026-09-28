@@ -24,7 +24,7 @@ class StudentShell extends ConsumerWidget {
         title: session?.user.name ?? '',
         subtitle: tenant == null ? null : '${tenant.teacherName} – ${tenant.subject}',
       ),
-      bottom: const EnrollmentSwitcher(),
+      banner: const EnrollmentSwitcher(),
       child: child,
     );
   }
