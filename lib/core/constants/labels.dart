@@ -87,6 +87,15 @@ extension ComplaintKindLabel on ComplaintKind {
   };
 }
 
+extension ExpenseCategoryLabel on ExpenseCategory {
+  String get label => switch (this) {
+    ExpenseCategory.rent => 'إيجار',
+    ExpenseCategory.printing => 'طباعة',
+    ExpenseCategory.salaries => 'رواتب',
+    ExpenseCategory.other => 'أخرى',
+  };
+}
+
 extension AssessmentTypeLabel on AssessmentType {
   String get label => switch (this) {
     AssessmentType.homework => 'واجب',
