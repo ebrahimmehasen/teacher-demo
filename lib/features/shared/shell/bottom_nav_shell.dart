@@ -13,7 +13,7 @@ class BottomNavShell extends StatelessWidget {
     required this.location,
     required this.title,
     required this.child,
-    this.bottom,
+    this.banner,
   });
 
   final List<RoleDestination> destinations;
@@ -21,8 +21,9 @@ class BottomNavShell extends StatelessWidget {
   final Widget title;
   final Widget child;
 
-  /// Extra row under the AppBar, e.g. the teacher/subject switcher.
-  final PreferredSizeWidget? bottom;
+  /// Extra content above the page, e.g. the child / teacher switcher. Any
+  /// height; collapses to nothing when the widget itself renders empty.
+  final Widget? banner;
 
   @override
   Widget build(BuildContext context) {
@@ -31,13 +32,16 @@ class BottomNavShell extends StatelessWidget {
     );
 
     return Scaffold(
-      appBar: AppBar(
-        title: title,
-        actions: const [NotificationBell(), AccountMenu()],
-        bottom: bottom,
-      ),
-      body: Center(
-        child: ConstrainedBox(constraints: const BoxConstraints(maxWidth: 720), child: child),
+      appBar: AppBar(title: title, actions: const [NotificationBell(), AccountMenu()]),
+      body: Column(
+        children: [
+          ?banner,
+          Expanded(
+            child: Center(
+              child: ConstrainedBox(constraints: const BoxConstraints(maxWidth: 720), child: child),
+            ),
+          ),
+        ],
       ),
       bottomNavigationBar: NavigationBar(
         selectedIndex: index < 0 ? 0 : index,
