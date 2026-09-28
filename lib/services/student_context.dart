@@ -1,7 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../core/utils/date_utils.dart';
 import '../data/models/models.dart';
 import '../data/repository_providers.dart';
+import 'dashboard_service.dart';
+import 'payment_status_service.dart';
+import 'pricing_service.dart';
 import 'session_service.dart';
 import 'tenant_data.dart';
 
@@ -62,6 +66,50 @@ final activeStudentGradesProvider = Provider<List<Grade>>((ref) {
     for (final g in grades)
       if (gradeIds.contains(g.id)) g,
   ];
+});
+
+/// Current-month billing of the active student's current-tenant enrollment(s).
+/// Empty when the student isn't enrolled in the current tenant (e.g. a
+/// platform admin, or a parent with no child selected yet).
+final activeStudentBillingProvider = FutureProvider<List<Billing>>((ref) async {
+  final now = ref.watch(clockProvider)();
+  final enrollments = ref.watch(activeStudentTenantEnrollmentsProvider);
+  if (enrollments.isEmpty) return const [];
+  final groups = {
+    for (final g in ref.watch(groupsProvider).asData?.value ?? const <Group>[]) g.id: g,
+  };
+  final grades = {
+    for (final g in ref.watch(gradesProvider).asData?.value ?? const <Grade>[]) g.id: g,
+  };
+  final payments = await ref.watch(paymentsProvider.future);
+
+  return [
+    for (final e in enrollments)
+      if (groups[e.groupId] case final group?)
+        if (grades[group.gradeId] case final grade?)
+          Billing(
+            enrollment: e,
+            group: group,
+            grade: grade,
+            price: PricingService.monthlyPrice(enrollment: e, group: group, grade: grade),
+            paid: PaymentStatusService.paidAmount(payments, e.studentId, AppDates.monthKey(now)),
+            status: PaymentStatusService.statusFor(
+              enrollment: e,
+              grade: grade,
+              price: PricingService.monthlyPrice(enrollment: e, group: group, grade: grade),
+              month: AppDates.monthKey(now),
+              payments: payments,
+              today: now,
+            ),
+          ),
+  ];
+});
+
+final activeStudentPaymentsProvider = StreamProvider<List<Payment>>((ref) {
+  final tenantId = ref.watch(sessionProvider.select((s) => s?.tenantId));
+  final studentId = ref.watch(activeStudentIdProvider);
+  if (tenantId == null || studentId == null) return Stream.value(const []);
+  return ref.watch(paymentRepositoryProvider).watchByTenant(tenantId, studentId: studentId);
 });
 
 final activeStudentAttendanceProvider = StreamProvider<List<Attendance>>((ref) {
