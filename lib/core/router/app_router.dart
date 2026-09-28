@@ -11,6 +11,10 @@ import '../../features/assistant/scanner/scanner_page.dart';
 import '../../features/assistant/sheets/sheet_sales_page.dart';
 import '../../features/assistant/students/assistant_students_page.dart';
 import '../../features/auth/login_page.dart';
+import '../../features/auth/parent_sign_up_page.dart';
+import '../../features/parent/children/manage_children_page.dart';
+import '../../features/parent/home/parent_home_page.dart';
+import '../../features/parent/more/parent_more_page.dart';
 import '../../features/parent/parent_shell.dart';
 import '../../features/platform_admin/admin_shell.dart';
 import '../../features/shared/announcements/announcements_list_page.dart';
@@ -19,12 +23,14 @@ import '../../features/shared/attendance/attendance_log_page.dart';
 import '../../features/shared/attendance/my_attendance_page.dart';
 import '../../features/shared/coming_soon_page.dart';
 import '../../features/shared/lessons/recorded_lessons_page.dart';
+import '../../features/shared/payments/payments_history_page.dart';
+import '../../features/shared/reports/student_report_page.dart';
+import '../../features/shared/requests/my_requests_page.dart';
 import '../../features/shared/schedule/my_schedule_page.dart';
 import '../../features/student/home/student_home_page.dart';
 import '../../features/student/more/student_more_page.dart';
 import '../../features/student/more/student_profile_page.dart';
 import '../../features/student/qr/student_qr_page.dart';
-import '../../features/student/requests/student_requests_page.dart';
 import '../../features/student/student_shell.dart';
 import '../../features/teacher/dashboard/dashboard_page.dart';
 import '../../features/teacher/schedule/schedule_page.dart';
@@ -52,6 +58,7 @@ final routerProvider = Provider<GoRouter>((ref) {
     ),
     routes: [
       GoRoute(path: loginPath, builder: (_, _) => const LoginPage()),
+      GoRoute(path: parentSignUpPath, builder: (_, _) => const ParentSignUpPage()),
       _roleShell(
         RoleDestinations.teacher,
         (location, child) => TeacherShell(location: location, child: child),
@@ -63,10 +70,12 @@ final routerProvider = Provider<GoRouter>((ref) {
       _roleShell(
         RoleDestinations.student,
         (location, child) => StudentShell(location: location, child: child),
+        moreSubPages: _studentMoreSubPages,
       ),
       _roleShell(
         RoleDestinations.parent,
         (location, child) => ParentShell(location: location, child: child),
+        moreSubPages: _parentMoreSubPages,
       ),
       _roleShell(
         RoleDestinations.platformAdmin,
@@ -100,13 +109,17 @@ final Map<String, Widget Function()> _pages = {
   '/student/home': () => const StudentHomePage(),
   '/student/qr': () => const StudentQrPage(),
   '/student/schedule': () => const MySchedulePage(),
-  '/student/requests': () => const StudentRequestsPage(),
+  '/student/requests': () => const MyRequestsPage(),
   '/student/more': () => const StudentMorePage(),
+  '/parent/home': () => const ParentHomePage(),
+  '/parent/attendance': () => const MyAttendancePage(),
+  '/parent/grades': () => const MyResultsPage(),
+  '/parent/requests': () => const MyRequestsPage(),
+  '/parent/more': () => const ParentMorePage(),
 };
 
-/// Sub-pages reached through "المزيد" (not their own bottom-nav tab), shared
-/// with the parent role in a later phase.
-final Map<String, Widget Function()> _moreSubPages = {
+/// Sub-pages of the student's "المزيد" tab.
+final Map<String, Widget Function()> _studentMoreSubPages = {
   'profile': () => const StudentProfilePage(),
   'attendance': () => const MyAttendancePage(),
   'grades': () => const MyResultsPage(),
@@ -114,7 +127,21 @@ final Map<String, Widget Function()> _moreSubPages = {
   'announcements': () => const AnnouncementsListPage(),
 };
 
-ShellRoute _roleShell(List<RoleDestination> destinations, _ShellBuilder shell) => ShellRoute(
+/// Sub-pages of the parent's "المزيد" tab.
+final Map<String, Widget Function()> _parentMoreSubPages = {
+  'children': () => const ManageChildrenPage(),
+  'schedule': () => const MySchedulePage(),
+  'report': () => const StudentReportPage(),
+  'payments': () => const PaymentsHistoryPage(),
+  'lessons': () => const RecordedLessonsPage(),
+  'announcements': () => const AnnouncementsListPage(),
+};
+
+ShellRoute _roleShell(
+  List<RoleDestination> destinations,
+  _ShellBuilder shell, {
+  Map<String, Widget Function()>? moreSubPages,
+}) => ShellRoute(
   builder: (context, state, child) => shell(state.uri.path, child),
   routes: [
     for (final d in destinations)
@@ -123,8 +150,8 @@ ShellRoute _roleShell(List<RoleDestination> destinations, _ShellBuilder shell) =
         pageBuilder: (_, _) =>
             NoTransitionPage(child: _pages[d.path]?.call() ?? ComingSoonPage(destination: d)),
         routes: [
-          if (d.path.endsWith('/more'))
-            for (final entry in _moreSubPages.entries)
+          if (d.path.endsWith('/more') && moreSubPages != null)
+            for (final entry in moreSubPages.entries)
               GoRoute(
                 path: entry.key,
                 pageBuilder: (_, _) => NoTransitionPage(child: entry.value()),
