@@ -69,6 +69,21 @@ final announcementsProvider = StreamProvider<List<Announcement>>((ref) {
   return _scoped(tenantId, ref.watch(announcementRepositoryProvider).watchByTenant);
 });
 
+final requestsProvider = StreamProvider<List<Request>>((ref) {
+  final tenantId = ref.watch(sessionProvider.select((s) => s?.tenantId));
+  return _scoped(tenantId, (id) => ref.watch(requestRepositoryProvider).watchByTenant(id));
+});
+
+final complaintsProvider = StreamProvider<List<Complaint>>((ref) {
+  final tenantId = ref.watch(sessionProvider.select((s) => s?.tenantId));
+  return _scoped(tenantId, (id) => ref.watch(complaintRepositoryProvider).watchByTenant(id));
+});
+
+final staffProvider = StreamProvider<List<StaffMember>>((ref) {
+  final tenantId = ref.watch(sessionProvider.select((s) => s?.tenantId));
+  return _scoped(tenantId, ref.watch(staffRepositoryProvider).watchByTenant);
+});
+
 final assessmentsProvider = StreamProvider<List<Assessment>>((ref) {
   final tenantId = ref.watch(sessionProvider.select((s) => s?.tenantId));
   return _scoped(tenantId, ref.watch(assessmentRepositoryProvider).watchAssessments);
