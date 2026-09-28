@@ -32,9 +32,16 @@ import '../../features/student/more/student_more_page.dart';
 import '../../features/student/more/student_profile_page.dart';
 import '../../features/student/qr/student_qr_page.dart';
 import '../../features/student/student_shell.dart';
+import '../../features/teacher/accounts/accounts_page.dart';
+import '../../features/teacher/announcements/teacher_announcements_page.dart';
 import '../../features/teacher/dashboard/dashboard_page.dart';
+import '../../features/teacher/grades/teacher_grades_page.dart';
+import '../../features/teacher/lessons/teacher_lessons_page.dart';
+import '../../features/teacher/requests/requests_inbox_page.dart';
 import '../../features/teacher/schedule/schedule_page.dart';
 import '../../features/teacher/settings/settings_page.dart';
+import '../../features/teacher/sheets/teacher_sheets_page.dart';
+import '../../features/teacher/staff/staff_page.dart';
 import '../../features/teacher/students/students_page.dart';
 import '../../features/teacher/teacher_shell.dart';
 import '../../services/session_service.dart';
@@ -98,6 +105,13 @@ final Map<String, Widget Function()> _pages = {
   '/teacher/students': () => const StudentsPage(),
   '/teacher/settings': () => const SettingsPage(),
   '/teacher/attendance': () => const AttendanceLogPage(),
+  '/teacher/sheets': () => const TeacherSheetsPage(),
+  '/teacher/lessons': () => const TeacherLessonsPage(),
+  '/teacher/grades': () => const TeacherGradesPage(),
+  '/teacher/announcements': () => const TeacherAnnouncementsPage(),
+  '/teacher/requests': () => const RequestsInboxPage(),
+  '/teacher/accounts': () => const AccountsPage(),
+  '/teacher/staff': () => const StaffPage(),
   '/assistant/home': () => const AssistantHomePage(),
   '/assistant/scanner': () => const ScannerPage(),
   '/assistant/manual-attendance': () => const ManualAttendancePage(),
