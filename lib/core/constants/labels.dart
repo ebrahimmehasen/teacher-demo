@@ -64,6 +64,36 @@ extension SubscriptionStatusLabel on SubscriptionStatus {
   };
 }
 
+extension RequestTypeLabelExt on RequestType {
+  String get label => switch (this) {
+    RequestType.absence => 'غياب',
+    RequestType.changeGroup => 'نقل مجموعة',
+    RequestType.other => 'أخرى',
+  };
+}
+
+extension RequestStatusLabel on RequestStatus {
+  String get label => switch (this) {
+    RequestStatus.pending => 'قيد الانتظار',
+    RequestStatus.approved => 'مقبول',
+    RequestStatus.rejected => 'مرفوض',
+  };
+}
+
+extension ComplaintKindLabel on ComplaintKind {
+  String get label => switch (this) {
+    ComplaintKind.complaint => 'شكوى',
+    ComplaintKind.warning => 'تنبيه',
+  };
+}
+
+extension AssessmentTypeLabel on AssessmentType {
+  String get label => switch (this) {
+    AssessmentType.homework => 'واجب',
+    AssessmentType.exam => 'امتحان',
+  };
+}
+
 abstract final class GroupLabels {
   static const _ordinals = [
     'الأولى',
