@@ -15,19 +15,23 @@ import '../../../services/student_context.dart';
 import '../../../services/tenant_data.dart';
 import 'create_request_dialog.dart';
 
-class StudentRequestsPage extends ConsumerWidget {
-  const StudentRequestsPage({super.key});
+/// Requests + received complaints/warnings for the active student. Used by
+/// both the student themselves and a parent viewing a selected child.
+class MyRequestsPage extends ConsumerWidget {
+  const MyRequestsPage({super.key});
 
   Future<void> _create(BuildContext context, WidgetRef ref) async {
     final draft = await showCreateRequestDialog(context);
     if (draft == null) return;
     final session = ref.read(sessionProvider)!;
+    final studentId = ref.read(activeStudentIdProvider)!;
+    final studentName = ref.read(activeStudentProvider).asData?.value?.name ?? '';
     await ref
         .read(requestServiceProvider)
         .create(
           tenantId: session.tenantId!,
-          studentId: session.user.id,
-          studentName: session.user.name,
+          studentId: studentId,
+          studentName: studentName,
           fromUserId: session.user.id,
           fromRole: session.role,
           type: draft.type,
