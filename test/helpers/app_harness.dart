@@ -72,3 +72,29 @@ Future<MockDatabase> bootApp(
   await settle(tester);
   return db;
 }
+
+/// Boots the app signed out, staying on the login page — for testing the
+/// login and parent sign-up flows themselves.
+Future<MockDatabase> bootSignedOutApp(
+  WidgetTester tester, {
+  Size size = const Size(390, 844),
+}) async {
+  tester.view.physicalSize = size;
+  tester.view.devicePixelRatio = 1;
+  addTearDown(tester.view.reset);
+
+  final db = MockDatabase(SeedGenerator(now: demoNow).generate(), latency: () => Duration.zero);
+  final container = ProviderContainer(
+    overrides: [
+      mockDatabaseProvider.overrideWithValue(db),
+      clockProvider.overrideWithValue(() => demoNow),
+    ],
+  );
+  addTearDown(container.dispose);
+
+  await tester.pumpWidget(
+    UncontrolledProviderScope(container: container, child: const TeacherDemoApp()),
+  );
+  await settle(tester);
+  return db;
+}
