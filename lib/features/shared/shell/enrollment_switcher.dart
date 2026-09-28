@@ -8,11 +8,8 @@ import '../../../services/tenant_data.dart';
 
 /// Teacher/subject switcher, shown whenever the active student has more than
 /// one enrollment. Required by the spec for both student and parent screens.
-class EnrollmentSwitcher extends ConsumerWidget implements PreferredSizeWidget {
+class EnrollmentSwitcher extends ConsumerWidget {
   const EnrollmentSwitcher({super.key});
-
-  @override
-  Size get preferredSize => const Size.fromHeight(52);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -27,30 +24,27 @@ class EnrollmentSwitcher extends ConsumerWidget implements PreferredSizeWidget {
     final currentTenantId = ref.watch(sessionProvider.select((s) => s?.tenantId));
     final theme = Theme.of(context);
 
-    return PreferredSize(
-      preferredSize: preferredSize,
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 8),
-        child: SizedBox(
-          height: 44,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            children: [
-              for (final tenantId in tenantIds)
-                if (tenants[tenantId] case final tenant?)
-                  Padding(
-                    padding: const EdgeInsetsDirectional.only(end: 8),
-                    child: ChoiceChip(
-                      label: Text('${tenant.teacherName} – ${tenant.subject}'),
-                      selected: tenantId == currentTenantId,
-                      onSelected: (_) => ref.read(sessionProvider.notifier).selectTenant(tenantId),
-                      labelStyle: theme.textTheme.bodySmall,
-                      visualDensity: VisualDensity.compact,
-                    ),
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0, 4, 0, 8),
+      child: SizedBox(
+        height: 40,
+        child: ListView(
+          scrollDirection: Axis.horizontal,
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          children: [
+            for (final tenantId in tenantIds)
+              if (tenants[tenantId] case final tenant?)
+                Padding(
+                  padding: const EdgeInsetsDirectional.only(end: 8),
+                  child: ChoiceChip(
+                    label: Text('${tenant.teacherName} – ${tenant.subject}'),
+                    selected: tenantId == currentTenantId,
+                    onSelected: (_) => ref.read(sessionProvider.notifier).selectTenant(tenantId),
+                    labelStyle: theme.textTheme.bodySmall,
+                    visualDensity: VisualDensity.compact,
                   ),
-            ],
-          ),
+                ),
+          ],
         ),
       ),
     );
