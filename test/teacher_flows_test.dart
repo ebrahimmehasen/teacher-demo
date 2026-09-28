@@ -24,6 +24,14 @@ void main() {
     await loadAppFonts();
   });
 
+  testWidgets('students table scrolls horizontally on tablet instead of overflowing', (
+    tester,
+  ) async {
+    await bootApp(tester, path: '/teacher/students', size: const Size(768, 1024));
+    expect(tester.takeException(), isNull);
+    expect(find.byType(DataTable), findsOneWidget);
+  });
+
   testWidgets('teacher adds a public group through the stepper', (tester) async {
     final db = await bootApp(tester, path: '/teacher/schedule');
     final before = db.groups.rows.length;
