@@ -302,8 +302,8 @@ class _StudentsTable extends StatelessWidget {
   Widget build(BuildContext context) {
     final muted = Theme.of(context).textTheme.bodySmall;
     return SingleChildScrollView(
-      child: SizedBox(
-        width: double.infinity,
+      scrollDirection: Axis.horizontal,
+      child: SingleChildScrollView(
         child: DataTable(
           showCheckboxColumn: true,
           headingTextStyle: const TextStyle(fontWeight: FontWeight.w700),
